@@ -54,6 +54,8 @@ Outfitter_cUndeadTrashOutfit = "Undead Trash Mobs";
 Outfitter_cDemonTrashOutfit = "Demon Trash Mobs";
 
 Outfitter_cMountSpeedFormat = "Increases speed by (%d+)%%."; -- For detecting when mounted
+Outfitter_cMountLowFormat = "Slow and steady"; --乌龟坐骑
+Outfitter_cMountFreeFormat = "speed based on your Riding"; --特殊坐骑
 
 Outfitter_cBagsFullError = "Outfitter: Can't remove %s because all bags are full";
 Outfitter_cDepositBagsFullError = "Outfitter: Can't deposit %s because all bank bags are full";

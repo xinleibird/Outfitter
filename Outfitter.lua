@@ -4006,12 +4006,11 @@ function Outfitter_GetPlayerAuraStates()
 				if vSpecialID then
 					vAuraStates[vSpecialID] = true;
 
-				elseif vTextLine2
-						and (
-						string.find(vTextLine2, Outfitter_cMountSpeedFormat) or --Mount fix by Red Mage Joe
-								string.find(vTextLine2, "Riding") or
-								string.find(vTextLine2, "Slow and steady...")
-				) then
+				elseif vTextLine2 and string.find(vTextLine2, Outfitter_cMountLowFormat) then
+					vAuraStates.Riding = true;
+				elseif vTextLine2 and string.find(vTextLine2, Outfitter_cMountSpeedFormat) then
+					vAuraStates.Riding = true;
+				elseif vTextLine2 and string.find(vTextLine2, Outfitter_cMountFreeFormat) then
 					vAuraStates.Riding = true;
 				end
 			end
