@@ -501,6 +501,16 @@ local gOutfitter_WeaponsNeedUpdate = false;
 local gOutfitter_LastEquipmentUpdateTime = 0;
 local Outfitter_cMinEquipmentUpdateInterval = 1.5;
 
+local Outfitter_cStartupSafeWindowInterval = 0.25;
+local Outfitter_cStartupSafeWindowsRequired = 3;
+local Outfitter_cStartupMinAge = 1.0;
+
+local gOutfitter_StartupGate = false;
+local gOutfitter_StartupSafeWindows = 0;
+local gOutfitter_StartupPendingEquipmentUpdate = false;
+local gOutfitter_StartupEnterTime = 0;
+local gOutfitter_StartupStableSnapshot = nil;
+
 local gOutfitter_CurrentOutfit = nil;
 local gOutfitter_ExpectedOutfit = nil;
 local gOutfitter_CurrentInventoryOutfit = nil;
@@ -768,6 +778,8 @@ function Outfitter_PlayerLeavingWorld()
 
 	gOutfitter_Suspended = true;
 
+	Outfitter_StopStartupSafeWindowGate();
+
 	Outfitter_SuspendEvent(OutfitterFrame, "BAG_UPDATE");
 	Outfitter_SuspendEvent(OutfitterFrame, "UNIT_INVENTORY_CHANGED");
 	Outfitter_SuspendEvent(OutfitterFrame, "UPDATE_INVENTORY_ALERTS");
@@ -785,6 +797,8 @@ function Outfitter_PlayerEnteringWorld()
 	Outfitter_pfUISkin()
 
 	Outfitter_ResumeLoadScreenEvents();
+
+	Outfitter_StartStartupSafeWindowGate();
 end
 
 function Outfitter_ResumeLoadScreenEvents()
@@ -835,6 +849,8 @@ end
 
 function Outfitter_BagUpdate()
 	local vBagIndex = arg1;
+
+	Outfitter_ResetStartupSafeWindowCounter();
 
 	OutfitterItemList_FlushBagFromEquippableItems(vBagIndex);
 
@@ -1092,6 +1108,8 @@ function Outfitter_InventoryChanged(pEvent)
 	if arg1 ~= "player" then
 		return ;
 	end
+
+	Outfitter_ResetStartupSafeWindowCounter();
 
 	-- debounce the event to avoid doing the same logic many times when swapping sets
 	AceEvent:ScheduleEvent("OutfitterUnitInventoryChanged", Outfitter_InventoryChanged2, 0.5)
@@ -3220,6 +3238,137 @@ end
 
 local gOutfitter_EquipmentUpdateCount = 0;
 
+function Outfitter_StartStartupSafeWindowGate()
+	Outfitter_RegisterEvent(OutfitterFrame, "ITEM_LOCK_CHANGED", Outfitter_OnItemLockChangedDuringStartup);
+
+	gOutfitter_StartupEnterTime = GetTime();
+	gOutfitter_StartupSafeWindows = 0;
+	gOutfitter_StartupPendingEquipmentUpdate = false;
+	gOutfitter_StartupStableSnapshot = nil;
+
+	if gOutfitter_EquippedNeedsUpdate or gOutfitter_WeaponsNeedUpdate then
+		gOutfitter_StartupGate = true;
+		AceEvent:ScheduleRepeatingEvent("OutfitterStartupSafeWindow", Outfitter_CheckStartupSafeWindow, Outfitter_cStartupSafeWindowInterval);
+	end
+end
+
+function Outfitter_StopStartupSafeWindowGate()
+	AceEvent:CancelScheduledEvent("OutfitterStartupSafeWindow");
+
+	gOutfitter_StartupGate = false;
+	gOutfitter_StartupSafeWindows = 0;
+	gOutfitter_StartupPendingEquipmentUpdate = false;
+	gOutfitter_StartupStableSnapshot = nil;
+
+	Outfitter_UnregisterEvent(OutfitterFrame, "ITEM_LOCK_CHANGED");
+end
+
+function Outfitter_ResetStartupSafeWindowCounter()
+	if not gOutfitter_StartupGate then
+		return ;
+	end
+
+	gOutfitter_StartupSafeWindows = 0;
+	gOutfitter_StartupStableSnapshot = Outfitter_CaptureEquipmentSnapshot();
+end
+
+function Outfitter_OnItemLockChangedDuringStartup(pEvent)
+	Outfitter_ResetStartupSafeWindowCounter();
+end
+
+function Outfitter_CaptureEquipmentSnapshot()
+	local vEquippableItems = OutfitterItemList_GetEquippableItems();
+	local vSnapshot = "";
+
+	if vEquippableItems then
+		for vInventorySlot, vItem in vEquippableItems.InventoryItems do
+			if vItem then
+				vSnapshot = vSnapshot .. vInventorySlot .. ":" .. vItem.Code .. "/" .. vItem.SubCode .. "/" .. (vItem.EnchantCode or 0) .. ";";
+			end
+		end
+
+		for vBagIndex, vBagItems in vEquippableItems.BagItems do
+			for vBagSlotIndex = 1, GetContainerNumSlots(vBagIndex) do
+				local vItem = vBagItems[vBagSlotIndex];
+
+				if vItem then
+					vSnapshot = vSnapshot .. "B" .. vBagIndex .. "S" .. vBagSlotIndex .. ":" .. vItem.Code .. "/" .. vItem.SubCode .. ";";
+				end
+			end
+		end
+	end
+
+	return vSnapshot;
+end
+
+function Outfitter_BagHasLockedItems()
+	for vBagIndex = 0, NUM_BAG_SLOTS do
+		local vNumBagSlots = GetContainerNumSlots(vBagIndex);
+
+		if vNumBagSlots and vNumBagSlots > 0 then
+			for vBagSlotIndex = 1, vNumBagSlots do
+				local vTexture, vItemCount, vLocked, vQuality, vReadable, vLootable, vItemLink = GetContainerItemInfo(vBagIndex, vBagSlotIndex);
+
+				if vLocked then
+					return true;
+				end
+			end
+		end
+	end
+
+	return false;
+end
+
+function Outfitter_CheckStartupSafeWindow()
+	if not gOutfitter_StartupGate then
+		AceEvent:CancelScheduledEvent("OutfitterStartupSafeWindow");
+		return ;
+	end
+
+	if GetTime() - gOutfitter_StartupEnterTime < Outfitter_cStartupMinAge then
+		return ;
+	end
+
+	if UnitAffectingCombat("player") then
+		gOutfitter_StartupSafeWindows = 0;
+		gOutfitter_StartupStableSnapshot = Outfitter_CaptureEquipmentSnapshot();
+		return ;
+	end
+
+	if CursorHasItem() then
+		gOutfitter_StartupSafeWindows = 0;
+		gOutfitter_StartupStableSnapshot = Outfitter_CaptureEquipmentSnapshot();
+		return ;
+	end
+
+	if Outfitter_BagHasLockedItems() then
+		gOutfitter_StartupSafeWindows = 0;
+		gOutfitter_StartupStableSnapshot = Outfitter_CaptureEquipmentSnapshot();
+		return ;
+	end
+
+	local vCurrentSnapshot = Outfitter_CaptureEquipmentSnapshot();
+
+	if vCurrentSnapshot ~= gOutfitter_StartupStableSnapshot then
+		gOutfitter_StartupSafeWindows = 0;
+		gOutfitter_StartupStableSnapshot = vCurrentSnapshot;
+		return ;
+	end
+
+	gOutfitter_StartupSafeWindows = gOutfitter_StartupSafeWindows + 1;
+
+	if gOutfitter_StartupSafeWindows >= Outfitter_cStartupSafeWindowsRequired then
+		gOutfitter_StartupGate = false;
+		gOutfitter_StartupPendingEquipmentUpdate = true;
+
+		AceEvent:CancelScheduledEvent("OutfitterStartupSafeWindow");
+
+		Outfitter_UnregisterEvent(OutfitterFrame, "ITEM_LOCK_CHANGED");
+
+		Outfitter_UpdateEquippedItems();
+	end
+end
+
 function Outfitter_BeginEquipmentUpdate()
 	gOutfitter_EquipmentUpdateCount = gOutfitter_EquipmentUpdateCount + 1;
 end
@@ -3237,6 +3386,15 @@ function Outfitter_UpdateEquippedItems()
 	if not gOutfitter_EquippedNeedsUpdate
 			and not gOutfitter_WeaponsNeedUpdate then
 		return ;
+	end
+
+	if gOutfitter_StartupGate then
+		gOutfitter_StartupPendingEquipmentUpdate = true;
+		return ;
+	end
+
+	if gOutfitter_StartupPendingEquipmentUpdate then
+		gOutfitter_StartupPendingEquipmentUpdate = false;
 	end
 
 	-- Delay all changes until they're alive
