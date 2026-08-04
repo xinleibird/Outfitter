@@ -256,7 +256,7 @@ if GetLocale() == "zhCN" then
 		"如果您不想在使用键绑定更改装备时看到消息，请关闭此选项。"
 	Outfitter_cShowHotkeyMessagesOffDescription =
 		"如果您希望使用键绑定更改装备时查看消息，请打开此选项。"
-	Outfitter_cShowCurrentOutfit = "在小窗口中显示当前装备"
+	Outfitter_cShowCurrentOutfit = "显示当前装备（Ctrl+Alt+Shift 拖动）"
 	Outfitter_cHideDisabledOutfits = "从列表中隐藏已禁用装备"
 
 	Outfitter_cEquipOutfitMessageFormat = "Outfitter: %s 装备"

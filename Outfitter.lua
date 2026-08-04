@@ -618,7 +618,9 @@ local function Outfitter_CreateCurrentOutfitFrame()
 
 	frame:RegisterForDrag("LeftButton") -- Only start dragging with the left mouse button
 	frame:SetScript("OnDragStart", function()
-		frame:StartMoving()
+		if IsControlKeyDown() and IsShiftKeyDown() and IsAltKeyDown() then
+			frame:StartMoving()
+		end
 	end)
 	frame:SetScript("OnDragStop", function()
 		frame:StopMovingOrSizing()

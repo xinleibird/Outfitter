@@ -244,7 +244,7 @@ Outfitter_cRememberVisibilityOffDescription = "Turn this on if you want Outfitte
 Outfitter_cShowHotkeyMessages = "Show key binding outfit changes";
 Outfitter_cShowHotkeyMessagesOnDescription = "Turn this off if you don't want to see a message when you change outfits using a key binding";
 Outfitter_cShowHotkeyMessagesOffDescription = "Turn this on if you want to see a message when you change outfits using a key binding";
-Outfitter_cShowCurrentOutfit = "Display current outfit in small window";
+Outfitter_cShowCurrentOutfit = "Display current outfit in small window (Ctrl+Alt+Shift to drag)";
 Outfitter_cHideDisabledOutfits = "Hide disabled outfits from list";
 
 Outfitter_cEquipOutfitMessageFormat = "Outfitter: %s equipped";
