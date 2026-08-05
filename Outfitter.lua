@@ -3331,6 +3331,23 @@ function Outfitter_StartupOutfitIsReady()
 	OutfitterItemList_FlushEquippableItems();
 
 	local vEquippableItems = OutfitterItemList_GetEquippableItems();
+
+	-- The player's actual equipped items must be fully resolvable.  If
+	-- GetInventoryItemInfo/GetItemInfo is still mid-load, Outfitter_Get
+	-- InventoryOutfit fills the unread slots with Code=0, which then
+	-- trickles into a "temporary outfit" that pollutes the stack and
+	-- causes the post-gate equip to strip every slot.
+
+	local vCurrentOutfit = Outfitter_GetInventoryOutfit();
+
+	for vInventorySlot, vItem in vCurrentOutfit.Items do
+		if vItem and vItem.Code ~= 0 then
+			if not OutfitterItemList_FindItemOrAlt(vEquippableItems, vItem, false) then
+				return false;
+			end
+		end
+	end
+
 	local vCompiledOutfit = Outfitter_GetCompiledOutfit();
 
 	for vInventorySlot, vOutfitItem in vCompiledOutfit.Items do
@@ -3397,6 +3414,20 @@ function Outfitter_CheckStartupSafeWindow()
 	gOutfitter_StartupSafeWindows = gOutfitter_StartupSafeWindows + 1;
 
 	if gOutfitter_StartupSafeWindows >= Outfitter_cStartupSafeWindowsRequired then
+		-- Drop the temporary outfit that RestoreSavedStack /
+		-- InventoryChanged2 may have built out of the unreadable
+		-- Code=0 slots from the early cold-start state.  Leaving it
+		-- on top of the stack would make the post-gate equip empty
+		-- every slot it covers.
+
+		local vTemporaryOutfit = OutfitterStack_GetTemporaryOutfit();
+
+		if vTemporaryOutfit then
+			OutfitterStack_RemoveOutfit(vTemporaryOutfit);
+		end
+
+		gOutfitter_ExpectedOutfit = Outfitter_GetCompiledOutfit();
+
 		gOutfitter_StartupGate = false;
 		gOutfitter_StartupPendingEquipmentUpdate = true;
 
