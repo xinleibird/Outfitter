@@ -504,6 +504,7 @@ local Outfitter_cMinEquipmentUpdateInterval = 1.5;
 local Outfitter_cStartupSafeWindowInterval = 0.25;
 local Outfitter_cStartupSafeWindowsRequired = 3;
 local Outfitter_cStartupMinAge = 1.0;
+local Outfitter_cStartupMaxAge = 15.0;
 
 local gOutfitter_StartupGate = false;
 local gOutfitter_StartupSafeWindows = 0;
@@ -3321,6 +3322,28 @@ function Outfitter_BagHasLockedItems()
 	return false;
 end
 
+function Outfitter_StartupOutfitIsReady()
+	-- Force the equippable items cache to be rebuilt so we pick up items
+	-- whose GetItemInfo data has finished loading since the last scan
+	-- (cold-start login loads the item database asynchronously, so the
+	-- cached list can be empty/stale with no triggering event).
+
+	OutfitterItemList_FlushEquippableItems();
+
+	local vEquippableItems = OutfitterItemList_GetEquippableItems();
+	local vCompiledOutfit = Outfitter_GetCompiledOutfit();
+
+	for vInventorySlot, vOutfitItem in vCompiledOutfit.Items do
+		if vOutfitItem.Code ~= 0 then
+			if not OutfitterItemList_FindItemOrAlt(vEquippableItems, vOutfitItem, false) then
+				return false;
+			end
+		end
+	end
+
+	return true;
+end
+
 function Outfitter_CheckStartupSafeWindow()
 	if not gOutfitter_StartupGate then
 		AceEvent:CancelScheduledEvent("OutfitterStartupSafeWindow");
@@ -3344,6 +3367,20 @@ function Outfitter_CheckStartupSafeWindow()
 	end
 
 	if Outfitter_BagHasLockedItems() then
+		gOutfitter_StartupSafeWindows = 0;
+		gOutfitter_StartupStableSnapshot = Outfitter_CaptureEquipmentSnapshot();
+		return ;
+	end
+
+	-- On a cold-start login the item database (GetItemInfo) loads
+	-- asynchronously, so the cached equippable items list can be empty
+	-- and stable while the gear we've compiled from the outfit stack
+	-- still isn't resolvable.  Hold the gate until the compiled outfit's
+	-- items are all findable, with a safety timeout so missing/alt
+	-- items don't wedge the gate forever.
+
+	if GetTime() - gOutfitter_StartupEnterTime < Outfitter_cStartupMaxAge
+			and not Outfitter_StartupOutfitIsReady() then
 		gOutfitter_StartupSafeWindows = 0;
 		gOutfitter_StartupStableSnapshot = Outfitter_CaptureEquipmentSnapshot();
 		return ;
