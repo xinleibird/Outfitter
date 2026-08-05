@@ -3240,7 +3240,7 @@ end
 
 local gOutfitter_EquipmentUpdateCount = 0;
 
-function Outfitter_StartStartupSafeWindowGate()
+function Outfitter_StartStartupSafeWindowGate(pForceArm)
 	Outfitter_RegisterEvent(OutfitterFrame, "ITEM_LOCK_CHANGED", Outfitter_OnItemLockChangedDuringStartup);
 
 	gOutfitter_StartupEnterTime = GetTime();
@@ -3248,7 +3248,7 @@ function Outfitter_StartStartupSafeWindowGate()
 	gOutfitter_StartupPendingEquipmentUpdate = false;
 	gOutfitter_StartupStableSnapshot = nil;
 
-	if gOutfitter_EquippedNeedsUpdate or gOutfitter_WeaponsNeedUpdate then
+	if pForceArm or gOutfitter_EquippedNeedsUpdate or gOutfitter_WeaponsNeedUpdate then
 		gOutfitter_StartupGate = true;
 		AceEvent:ScheduleRepeatingEvent("OutfitterStartupSafeWindow", Outfitter_CheckStartupSafeWindow, Outfitter_cStartupSafeWindowInterval);
 	end
@@ -4618,7 +4618,13 @@ function Outfitter_Initialize()
 
 	gOutfitter_Initialized = true;
 
-	-- Make sure the outfit state is good
+	-- Make sure the outfit state is good.  Arm the startup safe-window gate
+	-- up front so the equipment update triggered by removing the riding
+	-- and Spirit outfits is deferred until bags/inventory are stable --
+	-- otherwise the very first post-login equip can silently fail and
+	-- leave the riding gear stuck equipped on the player.
+
+	Outfitter_StartStartupSafeWindowGate(true);
 
 	Outfitter_SetSpecialOutfitEnabled("Riding", false);
 	Outfitter_SetSpecialOutfitEnabled("Spirit", false);
