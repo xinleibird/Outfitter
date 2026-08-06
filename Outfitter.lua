@@ -618,7 +618,8 @@ local function Outfitter_CreateCurrentOutfitFrame()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
 
-	frame:SetFrameStrata("HIGH")
+	frame:SetFrameStrata("MEDIUM")
+	frame:SetFrameLevel(1)
 
 	-- Create a FontString for currently equipped outfits
 	frame.equippedOutfits = frame:CreateFontString(nil, "DIALOG", "GameFontNormal")
