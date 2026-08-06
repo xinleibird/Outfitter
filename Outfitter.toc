@@ -18,5 +18,6 @@ OutfitterStrings_tw.lua
 OutfitterStrings_kr.lua
 
 BossTrash.lua
+BossTrash_cn.lua
 Outfitter.lua
 Outfitter.xml

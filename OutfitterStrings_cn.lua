@@ -374,6 +374,9 @@ if GetLocale() == "zhCN" then
 	Outfitter_cEvocate = "唤醒"
 
 	Outfitter_cCritter = "小动物"
+	Outfitter_cBeastCreatureType = "野兽"
+	Outfitter_cUndeadCreatureType = "亡灵"
+	Outfitter_cDemonCreatureType = "恶魔"
 
 	Outfitter_cCompleteCategoryDescripton =
 		"完整的服装有每个插槽指定的物品，将取代所有其他服装."

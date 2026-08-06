@@ -479,6 +479,17 @@ local gOutfitter_StatDistribution = {
 	},
 };
 
+local function Outfitter_GetStatDistribution()
+	local _, vPlayerClass = UnitClass("player");
+	local vNormalized = Outfitter_cNormalizedClassName and Outfitter_cNormalizedClassName[vPlayerClass];
+
+	if not vNormalized then
+		return nil;
+	end
+
+	return gOutfitter_StatDistribution[vNormalized:upper()];
+end
+
 local Outfitter_cCombatEquipmentSlots = {
 	MainHandSlot = true,
 	SecondaryHandSlot = true,
@@ -1078,15 +1089,15 @@ function Outfitter_TargetChangedDelayedEvent()
 
 			local creatureType = UnitCreatureType("target");
 			-- check if undead trash
-			if creatureType == "Beast" then
+			if creatureType == Outfitter_cBeastCreatureType then
 				Outfitter_SetSpecialOutfitEnabled("BeastTrash", true);
 				Outfitter_SetSpecialOutfitEnabled("UndeadTrash", false);
 				Outfitter_SetSpecialOutfitEnabled("DemonTrash", false);
-			elseif creatureType == "Undead" then
+			elseif creatureType == Outfitter_cUndeadCreatureType then
 				Outfitter_SetSpecialOutfitEnabled("BeastTrash", false);
 				Outfitter_SetSpecialOutfitEnabled("UndeadTrash", true);
 				Outfitter_SetSpecialOutfitEnabled("DemonTrash", false);
-			elseif creatureType == "Demon" then
+			elseif creatureType == Outfitter_cDemonCreatureType then
 				Outfitter_SetSpecialOutfitEnabled("BeastTrash", false);
 				Outfitter_SetSpecialOutfitEnabled("UndeadTrash", false);
 				Outfitter_SetSpecialOutfitEnabled("DemonTrash", true);
@@ -2705,8 +2716,7 @@ function Outfitter_ToggleOutfit(pOutfit, pCategoryID)
 end
 
 function Outfitter_OutfitSummary()
-	local _, vPlayerClass = UnitClass("player");
-	local vStatDistribution = gOutfitter_StatDistribution[vPlayerClass];
+	local vStatDistribution = Outfitter_GetStatDistribution();
 	local vCurrentOutfitStats = OutfitterTankPoints_GetCurrentOutfitStats(vStatDistribution);
 
 	Outfitter_DumpArray("Current Stats", vCurrentOutfitStats);
@@ -5922,8 +5932,7 @@ function OutfitterItemList_GetEquippableItems(pIncludeItemStats)
 		gOutfitter_EquippableItems = OutfitterItemList_New();
 	end
 
-	local _, vPlayerClass = UnitClass("player");
-	local vStatDistribution = gOutfitter_StatDistribution[vPlayerClass];
+	local vStatDistribution = Outfitter_GetStatDistribution();
 
 	if not gOutfitter_EquippableItems.InventoryItems
 			or pIncludeItemStats then
@@ -6907,7 +6916,7 @@ end
 function OutfitterTankPoints_New()
 	local vTankPointData = {};
 	local _, vPlayerClass = UnitClass("player");
-	local vStatDistribution = gOutfitter_StatDistribution[vPlayerClass];
+	local vStatDistribution = Outfitter_GetStatDistribution();
 
 	if not vStatDistribution then
 		Outfitter_ErrorMessage("Outfitter: Missing stat distribution data for " .. vPlayerClass);
@@ -7078,8 +7087,7 @@ function OutfitterTankPoints_GetCurrentOutfitStats(pStatDistribution)
 end
 
 function OutfitterTankPoints_Test()
-	local _, vPlayerClass = UnitClass("player");
-	local vStatDistribution = gOutfitter_StatDistribution[vPlayerClass];
+	local vStatDistribution = Outfitter_GetStatDistribution();
 
 	local vTankPointData = OutfitterTankPoints_New();
 	local vStats = OutfitterTankPoints_GetCurrentOutfitStats(vStatDistribution);

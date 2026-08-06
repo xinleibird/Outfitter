@@ -359,6 +359,9 @@ Outfitter_cAspectOfTheWild = "Aspect of the Wild";
 Outfitter_cEvocate = "Evocation";
 
 Outfitter_cCritter = "Critter";
+Outfitter_cBeastCreatureType = "Beast";
+Outfitter_cUndeadCreatureType = "Undead";
+Outfitter_cDemonCreatureType = "Demon";
 
 Outfitter_cCompleteCategoryDescripton = "Complete outfits have items specified for every slot and will replace all other outfits when worn.";
 Outfitter_cPartialCategoryDescription = "Mix-n-match outfits have only some slots specified, but not all.  When equipped, they are added on top of your selcted Complete outfit, replacing any other Mix-n-match or Accessory outfits selected.";
