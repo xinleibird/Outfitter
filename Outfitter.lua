@@ -512,6 +512,16 @@ local gOutfitter_WeaponsNeedUpdate = false;
 local gOutfitter_LastEquipmentUpdateTime = 0;
 local Outfitter_cMinEquipmentUpdateInterval = 1.5;
 
+-- Deferred (per-frame) equipment change execution.  Weapon slot changes are
+-- always applied immediately; non-weapon changes are queued here and stepped
+-- a few per frame to avoid a single-frame hitch.
+
+local Outfitter_cMaxChangesPerFrame = 2;
+local gOutfitter_PendingChangeList = nil;
+local gOutfitter_PendingChangeIndex = nil;
+local gOutfitter_PendingCompiledOutfit = nil;
+local gOutfitter_PendingEmptyBagSlots = nil;
+
 local Outfitter_cStartupSafeWindowInterval = 0.25;
 local Outfitter_cStartupSafeWindowsRequired = 3;
 local Outfitter_cStartupMinAge = 1.0;
@@ -3162,41 +3172,45 @@ function Outfitter_OptimizeEquipmentChangeList(pEquipmentChangeList)
 	end
 end
 
-function Outfitter_ExecuteEquipmentChangeList(pEquipmentChangeList, pEmptyBagSlots, pExpectedEquippableItems)
-	for vChangeIndex, vEquipmentChange in pEquipmentChangeList do
-		if vEquipmentChange.ItemLocation then
-			Outfitter_PickupItemLocation(vEquipmentChange.ItemLocation);
-			EquipCursorItem(vEquipmentChange.SlotID);
+function Outfitter_ExecuteEquipmentChange(pEquipmentChange, pEmptyBagSlots, pExpectedEquippableItems)
+	if pEquipmentChange.ItemLocation then
+		Outfitter_PickupItemLocation(pEquipmentChange.ItemLocation);
+		EquipCursorItem(pEquipmentChange.SlotID);
 
-			if pExpectedEquippableItems then
-				OutfitterItemList_SwapLocationWithInventorySlot(pExpectedEquippableItems, vEquipmentChange.ItemLocation, vEquipmentChange.SlotName);
+		if pExpectedEquippableItems then
+			OutfitterItemList_SwapLocationWithInventorySlot(pExpectedEquippableItems, pEquipmentChange.ItemLocation, pEquipmentChange.SlotName);
+		end
+	else
+		-- Remove the item
+
+		if not pEmptyBagSlots
+				or table.getn(pEmptyBagSlots) == 0 then
+			local vItemInfo = Outfitter_GetInventoryItemInfo(pEquipmentChange.SlotName);
+
+			if not vItemInfo then
+				Outfitter_ErrorMessage("Outfitter internal error: Can't empty slot " .. pEquipmentChange.SlotName .. " because bags are full but slot is empty");
+			else
+				Outfitter_ErrorMessage(format(Outfitter_cBagsFullError, vItemInfo.Name));
 			end
 		else
-			-- Remove the item
+			local vBagIndex = pEmptyBagSlots[1].BagIndex;
+			local vBagSlotIndex = pEmptyBagSlots[1].BagSlotIndex;
 
-			if not pEmptyBagSlots
-					or table.getn(pEmptyBagSlots) == 0 then
-				local vItemInfo = Outfitter_GetInventoryItemInfo(vEquipmentChange.SlotName);
+			table.remove(pEmptyBagSlots, 1);
 
-				if not vItemInfo then
-					Outfitter_ErrorMessage("Outfitter internal error: Can't empty slot " .. vEquipmentChange.SlotName .. " because bags are full but slot is empty");
-				else
-					Outfitter_ErrorMessage(format(Outfitter_cBagsFullError, vItemInfo.Name));
-				end
-			else
-				local vBagIndex = pEmptyBagSlots[1].BagIndex;
-				local vBagSlotIndex = pEmptyBagSlots[1].BagSlotIndex;
+			PickupInventoryItem(pEquipmentChange.SlotID);
+			PickupContainerItem(vBagIndex, vBagSlotIndex);
 
-				table.remove(pEmptyBagSlots, 1);
-
-				PickupInventoryItem(vEquipmentChange.SlotID);
-				PickupContainerItem(vBagIndex, vBagSlotIndex);
-
-				if pExpectedEquippableItems then
-					OutfitterItemList_SwapBagSlotWithInventorySlot(pExpectedEquippableItems, vBagIndex, vBagSlotIndex, vEquipmentChange.SlotName);
-				end
+			if pExpectedEquippableItems then
+				OutfitterItemList_SwapBagSlotWithInventorySlot(pExpectedEquippableItems, vBagIndex, vBagSlotIndex, pEquipmentChange.SlotName);
 			end
 		end
+	end
+end
+
+function Outfitter_ExecuteEquipmentChangeList(pEquipmentChangeList, pEmptyBagSlots, pExpectedEquippableItems)
+	for vChangeIndex, vEquipmentChange in pEquipmentChangeList do
+		Outfitter_ExecuteEquipmentChange(vEquipmentChange, pEmptyBagSlots, pExpectedEquippableItems);
 	end
 end
 
@@ -3486,16 +3500,19 @@ function Outfitter_UpdateEquippedItems()
 		return ;
 	end
 
+	-- Throttle non-weapon requests so frequent outfit changes don't
+	-- trigger a full rescan each time.  Weapon changes are never
+	-- throttled: weapon swaps must stay immediate in and out of combat
+
 	local vCurrentTime = GetTime();
 
-	if vCurrentTime - gOutfitter_LastEquipmentUpdateTime < Outfitter_cMinEquipmentUpdateInterval then
+	if not gOutfitter_WeaponsNeedUpdate
+			and vCurrentTime - gOutfitter_LastEquipmentUpdateTime < Outfitter_cMinEquipmentUpdateInterval then
 		OutfitterTimer_AdjustTimer();
 		return ;
 	end
 
 	gOutfitter_LastEquipmentUpdateTime = vCurrentTime;
-
-	local vWeaponsNeedUpdate = gOutfitter_WeaponsNeedUpdate;
 
 	gOutfitter_EquippedNeedsUpdate = false;
 	gOutfitter_WeaponsNeedUpdate = false;
@@ -3505,57 +3522,114 @@ function Outfitter_UpdateEquippedItems()
 	local vEquippableItems = OutfitterItemList_GetEquippableItems();
 	local vCompiledOutfit = Outfitter_GetCompiledOutfit();
 
-	-- If the outfit contains non-weapon changes then
-	-- delay the change until they're out of combat but go
-	-- ahead and swap the weapon slots if there are any
+	local vEquipmentChangeList = Outfitter_BuildEquipmentChangeList(vCompiledOutfit, vEquippableItems);
 
-	if gOutfitter_InCombat then
-		if vWeaponsNeedUpdate
-				and Outfitter_OutfitHasCombatEquipmentSlots(vCompiledOutfit) then
+	-- Split the changes into weapon slots (applied immediately, in or out
+	-- of combat) and everything else (deferred while in combat, otherwise
+	-- queued and stepped a few per frame to avoid a single-frame hitch)
 
-			-- Allow the weapon change to proceed but defer the rest
-			-- until they're out of combat
+	local vWeaponChangeList = {};
+	local vArmorChangeList = {};
 
-			local vWeaponOutfit = Outfitter_NewEmptyOutfit();
-
-			for vEquipmentSlot, _ in Outfitter_cCombatEquipmentSlots do
-				vWeaponOutfit.Items[vEquipmentSlot] = vCompiledOutfit.Items[vEquipmentSlot];
+	if vEquipmentChangeList then
+		for vChangeIndex, vEquipmentChange in vEquipmentChangeList do
+			if vEquipmentChange.SlotName
+					and Outfitter_cCombatEquipmentSlots[vEquipmentChange.SlotName] then
+				table.insert(vWeaponChangeList, vEquipmentChange);
+			else
+				table.insert(vArmorChangeList, vEquipmentChange);
 			end
-
-			-- Still need to update the rest once they exit combat
-			-- if there are non-equipment slot items
-
-			if not Outfitter_OutfitOnlyHasCombatEquipmentSlots(vCompiledOutfit) then
-				gOutfitter_EquippedNeedsUpdate = true;
-			end
-
-			-- Switch to the weapons-only part
-
-			vCompiledOutfit = vWeaponOutfit;
-		else
-			-- No weapon changes, just defer the whole outfit change
-
-			gOutfitter_EquippedNeedsUpdate = true;
-			return ;
 		end
 	end
 
-	-- Equip it
+	local vWeaponChangeCount = table.getn(vWeaponChangeList);
+	local vArmorChangeCount = table.getn(vArmorChangeList);
 
-	local vEquipmentChangeList = Outfitter_BuildEquipmentChangeList(vCompiledOutfit, vEquippableItems);
+	local vEmptyBagSlots;
 
-	if vEquipmentChangeList then
-		-- local	vExpectedEquippableItems = OutfitterItemList_New();
-
-		Outfitter_ExecuteEquipmentChangeList(vEquipmentChangeList, Outfitter_GetEmptyBagSlotList(), vExpectedEquippableItems);
-
-		-- Outfitter_DumpArray("ExpectedEquippableItems", vExpectedEquippableItems);
+	if vWeaponChangeCount > 0
+			or vArmorChangeCount > 0 then
+		vEmptyBagSlots = Outfitter_GetEmptyBagSlotList();
 	end
 
-	-- Update the outfit we're expecting to see on the player
+	-- Apply weapon changes immediately and update the expected weapon state
 
-	for vInventorySlot, vItem in vCompiledOutfit.Items do
-		gOutfitter_ExpectedOutfit.Items[vInventorySlot] = vCompiledOutfit.Items[vInventorySlot];
+	if vWeaponChangeCount > 0 then
+		-- local	vExpectedEquippableItems = OutfitterItemList_New();
+
+		Outfitter_ExecuteEquipmentChangeList(vWeaponChangeList, vEmptyBagSlots, vExpectedEquippableItems);
+
+		for vInventorySlot, vItem in vCompiledOutfit.Items do
+			if Outfitter_cCombatEquipmentSlots[vInventorySlot] then
+				gOutfitter_ExpectedOutfit.Items[vInventorySlot] = vItem;
+			end
+		end
+	end
+
+	-- Non-weapon changes are deferred while in combat and queued for
+	-- per-frame execution otherwise
+
+	if vArmorChangeCount > 0 then
+		if gOutfitter_InCombat then
+			gOutfitter_EquippedNeedsUpdate = true;
+		else
+			gOutfitter_PendingChangeList = vArmorChangeList;
+			gOutfitter_PendingChangeIndex = 1;
+			gOutfitter_PendingCompiledOutfit = vCompiledOutfit;
+			gOutfitter_PendingEmptyBagSlots = vEmptyBagSlots;
+
+			OutfitterTimer_AdjustTimer();
+		end
+	end
+end
+
+function Outfitter_StepPendingEquip()
+	if not gOutfitter_PendingChangeList then
+		return ;
+	end
+
+	-- Pause while dead; defer to a fresh build while in combat because
+	-- non-weapon slots can't change in combat
+
+	if gOutfitter_IsDead then
+		return ;
+	end
+
+	if gOutfitter_InCombat then
+		gOutfitter_EquippedNeedsUpdate = true;
+		gOutfitter_PendingChangeList = nil;
+		gOutfitter_PendingChangeIndex = nil;
+		gOutfitter_PendingCompiledOutfit = nil;
+		gOutfitter_PendingEmptyBagSlots = nil;
+		OutfitterTimer_AdjustTimer();
+		return ;
+	end
+
+	for vChangeCount = 1, Outfitter_cMaxChangesPerFrame do
+		local vEquipmentChange = gOutfitter_PendingChangeList[gOutfitter_PendingChangeIndex];
+
+		if not vEquipmentChange then
+			-- All changes applied: commit the expected non-weapon state
+
+			for vInventorySlot, vItem in gOutfitter_PendingCompiledOutfit.Items do
+				if not Outfitter_cCombatEquipmentSlots[vInventorySlot] then
+					gOutfitter_ExpectedOutfit.Items[vInventorySlot] = vItem;
+				end
+			end
+
+			gOutfitter_PendingChangeList = nil;
+			gOutfitter_PendingChangeIndex = nil;
+			gOutfitter_PendingCompiledOutfit = nil;
+			gOutfitter_PendingEmptyBagSlots = nil;
+
+			OutfitterTimer_AdjustTimer();
+			Outfitter_Update(false);
+			return ;
+		end
+
+		Outfitter_ExecuteEquipmentChange(vEquipmentChange, gOutfitter_PendingEmptyBagSlots, nil);
+
+		gOutfitter_PendingChangeIndex = gOutfitter_PendingChangeIndex + 1;
 	end
 end
 
@@ -5410,7 +5484,8 @@ function OutfitterTimer_AdjustTimer()
 	end
 
 	if gOutfitter_EquippedNeedsUpdate
-			or gOutfitter_WeaponsNeedUpdate then
+			or gOutfitter_WeaponsNeedUpdate
+			or gOutfitter_PendingChangeList then
 		vNeedTimer = true;
 	end
 
@@ -5438,6 +5513,7 @@ function OutfitterUpdateFrame_OnUpdate(pElapsed)
 		end
 	end
 
+	Outfitter_StepPendingEquip();
 	OutfitterTimer_AdjustTimer();
 end
 
