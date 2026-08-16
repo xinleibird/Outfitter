@@ -213,11 +213,11 @@ local Outfitter_cSmartOutfits = {
 	{ Name = Outfitter_cHerbalismOutfit, StatID = "Herbalism", IsAccessory = true },
 	{ Name = Outfitter_cMiningOutfit, StatID = "Mining", IsAccessory = true },
 	{ Name = Outfitter_cSkinningOutfit, StatID = "Skinning", IsAccessory = true },
-	{ Name = Outfitter_cFireResistOutfit, StatID = "FireResist" },
-	{ Name = Outfitter_cNatureResistOutfit, StatID = "NatureResist" },
-	{ Name = Outfitter_cShadowResistOutfit, StatID = "ShadowResist" },
-	{ Name = Outfitter_cArcaneResistOutfit, StatID = "ArcaneResist" },
-	{ Name = Outfitter_cFrostResistOutfit, StatID = "FrostResist" },
+	{ Name = Outfitter_cFireResistOutfit, StatID = "FireResist", IsBuiltIn = true },
+	{ Name = Outfitter_cNatureResistOutfit, StatID = "NatureResist", IsBuiltIn = true },
+	{ Name = Outfitter_cShadowResistOutfit, StatID = "ShadowResist", IsBuiltIn = true },
+	{ Name = Outfitter_cArcaneResistOutfit, StatID = "ArcaneResist", IsBuiltIn = true },
+	{ Name = Outfitter_cFrostResistOutfit, StatID = "FrostResist", IsBuiltIn = true },
 };
 
 local Outfitter_cStatCategoryInfo = {
@@ -1435,7 +1435,7 @@ function OutfitterItemDropDown_Initialize()
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfitInBG, "BGDISABLE", vOutfit.BGDisabled);
 			--hax
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfitInInstance, "INSTDISABLE", vOutfit.InstDisabled);
-		else
+		elseif not vOutfit.IsBuiltIn then
 			Outfitter_AddMenuItem(vFrame, PET_RENAME, "RENAME");
 		end
 
@@ -1450,7 +1450,8 @@ function OutfitterItemDropDown_Initialize()
 
 		Outfitter_AddSubmenuItem(vFrame, Outfitter_cKeyBinding, "BINDING");
 
-		if not vIsSpecialOutfit then
+		if not vIsSpecialOutfit
+				and not vOutfit.IsBuiltIn then
 			Outfitter_AddMenuItem(vFrame, DELETE, "DELETE");
 		end
 
@@ -4559,6 +4560,10 @@ function Outfitter_UpdateOutfitCategory(pOutfit)
 end
 
 function Outfitter_DeleteOutfit(pOutfit)
+	if pOutfit.IsBuiltIn then
+		return ;
+	end
+
 	local vWearingOutfit = Outfitter_WearingOutfit(pOutfit);
 	local vOutfitCategoryID, vOutfitIndex = Outfitter_FindOutfit(pOutfit);
 
@@ -4822,7 +4827,13 @@ function Outfitter_InitializeOutfits()
 	-- Generate the smart outfits
 
 	for vSmartIndex, vSmartOutfit in Outfitter_cSmartOutfits do
-		vOutfit = Outfitter_GenerateSmartOutfit(vSmartOutfit.Name, vSmartOutfit.StatID, vEquippableItems);
+		if vSmartOutfit.IsBuiltIn then
+			vOutfit = Outfitter_NewEmptyOutfit(vSmartOutfit.Name);
+			vOutfit.StatID = vSmartOutfit.StatID;
+			vOutfit.IsBuiltIn = true;
+		else
+			vOutfit = Outfitter_GenerateSmartOutfit(vSmartOutfit.Name, vSmartOutfit.StatID, vEquippableItems);
+		end
 
 		if vOutfit then
 			vOutfit.IsAccessory = vSmartOutfit.IsAccessory;
@@ -5130,6 +5141,11 @@ function OutfitterNameOutfit_Done()
 	if vName
 			and vName ~= "" then
 		if gOutfitter_OutfitToRename then
+			if gOutfitter_OutfitToRename.IsBuiltIn then
+				OutfitterNameOutfitDialog:Hide();
+				return ;
+			end
+
 			local vWearingOutfit = Outfitter_WearingOutfit(gOutfitter_OutfitToRename);
 
 			if vWearingOutfit then
