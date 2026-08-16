@@ -400,6 +400,7 @@ Outfitter_cSpellsCategory = "Healing and Spells";
 Outfitter_cRegenCategory = "Regeneration";
 Outfitter_cResistCategory = "Resistances";
 Outfitter_cTradeCategory = "Trade Skills";
+Outfitter_cSpecialStatCategory = "Special";
 
 Outfitter_cTankPoints = "TankPoints";
 Outfitter_cCustom = "Custom";

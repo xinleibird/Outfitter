@@ -421,6 +421,7 @@ if GetLocale() == "zhCN" then
 	Outfitter_cRegenCategory = "回复"
 	Outfitter_cResistCategory = "抗性"
 	Outfitter_cTradeCategory = "专业技能"
+	Outfitter_cSpecialStatCategory = "特殊"
 
 	Outfitter_cTankPoints = "坦克点数"
 	Outfitter_cCustom = "自定义"

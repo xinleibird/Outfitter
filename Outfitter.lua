@@ -227,6 +227,7 @@ local Outfitter_cStatCategoryInfo = {
 	{ Category = "Regen", Name = Outfitter_cRegenCategory },
 	{ Category = "Resist", Name = Outfitter_cResistCategory },
 	{ Category = "Trade", Name = Outfitter_cTradeCategory },
+	{ Category = "Special", Name = Outfitter_cSpecialStatCategory },
 };
 
 local Outfitter_cItemStatInfo = {
@@ -267,6 +268,9 @@ local Outfitter_cItemStatInfo = {
 	{ ID = "Herbalism", Name = Outfitter_cHerbalismStatName, Category = "Trade" },
 	{ ID = "Mining", Name = Outfitter_cMiningStatName, Category = "Trade" },
 	{ ID = "Skinning", Name = Outfitter_cSkinningStatName, Category = "Trade" },
+
+	{ ID = "Riding", Name = Outfitter_cRidingOutfit, Category = "Special" },
+	{ ID = "ArgentDawn", Name = Outfitter_cArgentDawnOutfit, Category = "Special" },
 };
 
 local Outfitter_cNormalizedClassName = {
