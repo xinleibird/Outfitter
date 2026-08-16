@@ -404,9 +404,3 @@ Outfitter_cSpecialStatCategory = "Special";
 
 Outfitter_cTankPoints = "TankPoints";
 Outfitter_cCustom = "Custom";
-
-Outfitter_cRequiresHerbalism = "Requires Herbalism";
-Outfitter_cRequiresSkinning = "Requires Skinning";
-Outfitter_cRequiresMining = "Requires Mining";
-Outfitter_cAutoEquip = "Auto equip";
-Outfitter_cAutoUnEquip = "Auto unequip";

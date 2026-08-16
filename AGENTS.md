@@ -23,6 +23,7 @@ Turtle WoW（基于 1.12 经典客户端）的装备管理插件。`## Interface
 - **版本号**：同时改 `Outfitter.toc` 的 `## Version:` 与 `OutfitterStrings.lua` 的 `Outfitter_cVersion`（以及 `_cn` 里的覆写）。
 - **特殊套装**（Boss/Lvl63/Trash/Critter/BeastTrash/UndeadTrash/DemonTrash/Riding/Dining/BG…）统一在 `Outfitter_TargetChangedDelayedEvent`（`Outfitter.lua:1058`）里切换。新增"目标驱动"套装挂在这里。
 - **登录期间的装备变更**必须走 `Outfitter_StartStartupSafeWindowGate`，**不要**在 `PLAYER_ENTERING_WORLD` 直接调 `EquipItem*`。
+- **Riding/ArgentDawn 与 Smart outfits 一致**：只在首次初始化（`gOutfitter_Settings.Outfits` 为 nil）时扫描背包创建并自动填充装备；之后每次登录**不自动重建、不重扫**。装备变化靠手动右键"重建"（REBUILD，走 `Outfitter_GenerateSmartOutfit`）补。**不要**再加回"每次登录缺失即自动重建"的逻辑。
 - **外观集成**（如 `Outfitter_pfUISkin`）必须用 `IsAddOnLoaded(...)` 守门，对应插件不存在时静默 no-op。
 
 ## Slash / 快捷键

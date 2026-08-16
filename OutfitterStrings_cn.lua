@@ -425,10 +425,4 @@ if GetLocale() == "zhCN" then
 
 	Outfitter_cTankPoints = "坦克点数"
 	Outfitter_cCustom = "自定义"
-
-	Outfitter_cRequiresHerbalism = "需要草药学"
-	Outfitter_cRequiresSkinning = "需要剥皮"
-	Outfitter_cRequiresMining = "需要采矿"
-	Outfitter_cAutoEquip = "自动装备"
-	Outfitter_cAutoUnEquip = "自动卸下"
 end

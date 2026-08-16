@@ -540,7 +540,6 @@ local gOutfitter_StartupStableSnapshot = nil;
 local gOutfitter_CurrentOutfit = nil;
 local gOutfitter_ExpectedOutfit = nil;
 local gOutfitter_CurrentInventoryOutfit = nil;
-local gOutfitter_CurrentProfessionOutfit = nil;
 local gOutfitter_EquippableItems = nil;
 
 local gOutfitter_Initialized = false;
@@ -746,10 +745,6 @@ function Outfitter_OnLoad()
 
 	-- For boss/trash outfit
 	Outfitter_RegisterEvent(this, "PLAYER_TARGET_CHANGED", Outfitter_TargetChanged);
-
-	-- For auto-equip/unequip of profession outfits
-	Outfitter_RegisterEvent(this, "UI_ERROR_MESSAGE", Outfitter_ProfessionCheck);
-	Outfitter_RegisterEvent(this, "LOOT_CLOSED", Outfitter_ProfessionUnequip);
 
 	-- Tabs
 
@@ -993,34 +988,6 @@ end
 function Outfitter_PlayerAlive(pEvent)
 	if not UnitIsDeadOrGhost("player") then
 		gOutfitter_IsDead = false;
-	end
-end
-
-function Outfitter_ProfessionCheck(pEvent)
-	local profession
-	if string.find(arg1, Outfitter_cRequiresSkinning) then
-		profession = "Skinning";
-	elseif string.find(arg1, Outfitter_cRequiresMining) then
-		profession = "Mining";
-	elseif string.find(arg1, Outfitter_cRequiresHerbalism) then
-		profession = "Herbalism";
-	end
-
-	if profession then
-		local vOutfit = Outfitter_FindOutfitByStatID(profession)
-		if vOutfit and vOutfit.AutoEquip then
-			gOutfitter_CurrentProfessionOutfit = vOutfit;
-			Outfitter_WearOutfit(gOutfitter_CurrentProfessionOutfit);
-		end
-	end
-end
-
-function Outfitter_ProfessionUnequip(pEvent)
-	if gOutfitter_CurrentProfessionOutfit then
-		if gOutfitter_CurrentProfessionOutfit.AutoUnEquip and Outfitter_WearingOutfit(gOutfitter_CurrentProfessionOutfit) then
-			Outfitter_RemoveOutfit(gOutfitter_CurrentProfessionOutfit);
-		end
-		gOutfitter_CurrentProfessionOutfit = nil;
 	end
 end
 
@@ -1460,11 +1427,6 @@ function OutfitterItemDropDown_Initialize()
 		end
 
 		Outfitter_AddMenuItem(vFrame, Outfitter_cUpdateToCurrent, "UPDATE");
-
-		if vOutfit.StatID == "Mining" or vOutfit.StatID == "Skinning" or vOutfit.StatID == "Herbalism" then
-			Outfitter_AddMenuItem(vFrame, Outfitter_cAutoEquip, "AUTOEQUIP", vOutfit.AutoEquip);
-			Outfitter_AddMenuItem(vFrame, Outfitter_cAutoUnEquip, "AUTOUNEQUIP", vOutfit.AutoUnEquip);
-		end
 
 		Outfitter_AddCategoryMenuItem(Outfitter_cBankCategoryTitle);
 		Outfitter_AddMenuItem(vFrame, Outfitter_cDepositToBank, "DEPOSIT", nil, nil, nil, not gOutfitter_BankFrameOpened);
@@ -4845,6 +4807,17 @@ function Outfitter_InitializeOutfits()
 		end
 	end
 
+	-- Riding / ArgentDawn: only scan and fill on first init, same as smart outfits
+
+	vOutfit = Outfitter_GenerateSmartOutfit(Outfitter_cArgentDawnOutfit, "ArgentDawn", vEquippableItems, true);
+	vOutfit.SpecialID = "ArgentDawn";
+	Outfitter_AddOutfit(vOutfit);
+
+	vOutfit = Outfitter_GenerateSmartOutfit(Outfitter_cRidingOutfit, "Riding", vEquippableItems, true);
+	vOutfit.SpecialID = "Riding";
+	vOutfit.BGDisabled = true;
+	Outfitter_AddOutfit(vOutfit);
+
 	Outfitter_InitializeSpecialOccassionOutfits();
 end
 
@@ -4860,29 +4833,7 @@ function Outfitter_CreateEmptySpecialOccassionOutfit(pSpecialID, pName)
 end
 
 function Outfitter_InitializeSpecialOccassionOutfits()
-	local vEquippableItems = OutfitterItemList_GetEquippableItems(true);
 	local vOutfit;
-
-	-- Find an argent dawn trinket and set the argent dawn outfit
-
-	vOutfit = Outfitter_GetSpecialOutfit("ArgentDawn");
-
-	if not vOutfit then
-		vOutfit = Outfitter_GenerateSmartOutfit(Outfitter_cArgentDawnOutfit, "ArgentDawn", vEquippableItems, true);
-		vOutfit.SpecialID = "ArgentDawn";
-		Outfitter_AddOutfit(vOutfit);
-	end
-
-	-- Find riding items
-
-	vOutfit = Outfitter_GetSpecialOutfit("Riding");
-
-	if not vOutfit then
-		vOutfit = Outfitter_GenerateSmartOutfit(Outfitter_cRidingOutfit, "Riding", vEquippableItems, true);
-		vOutfit.SpecialID = "Riding";
-		vOutfit.BGDisabled = true;
-		Outfitter_AddOutfit(vOutfit);
-	end
 
 	-- Create the dining outfit
 
@@ -5332,18 +5283,6 @@ function Outfitter_OutfitItemSelected(pMenu, pValue)
 		Outfitter_DepositOutfit(vOutfit, true);
 	elseif pValue == "WITHDRAW" then
 		Outfitter_WithdrawOutfit(vOutfit);
-	elseif pValue == "AUTOEQUIP" then
-		if vOutfit.AutoEquip then
-			vOutfit.AutoEquip = nil;
-		else
-			vOutfit.AutoEquip = true;
-		end
-	elseif pValue == "AUTOUNEQUIP" then
-		if vOutfit.AutoUnEquip then
-			vOutfit.AutoUnEquip = nil;
-		else
-			vOutfit.AutoUnEquip = true;
-		end
 	end
 
 	Outfitter_Update(true);
