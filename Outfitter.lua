@@ -1443,7 +1443,7 @@ function OutfitterItemDropDown_Initialize()
 			end
 		end
 
-		if vIsSpecialOutfit then
+		if vIsSpecialOutfit or vOutfit.IsBuiltIn then
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfit, "DISABLE", vOutfit.Disabled);
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfitInBG, "BGDISABLE", vOutfit.BGDisabled);
 			--hax
