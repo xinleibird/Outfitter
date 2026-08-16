@@ -151,6 +151,7 @@ Outfitter_cItemStatFormats = {
 	{ Format = "Restores (%d+) health per 5 sec.", Types = { "HealthRegen" } },
 
 	{ Format = "Minor Mount Speed Increase", Value = 3, Types = { "Riding" } },
+	{ Format = "Slightly Increased Mount Speed", Value = 2, Types = { "Riding" } },
 	{ Format = "Mithril Spurs", Value = 3, Types = { "Riding" } },
 	{ Format = "Thorium Spurs", Value = 5, Types = { "Riding" } },
 

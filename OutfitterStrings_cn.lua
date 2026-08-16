@@ -152,6 +152,7 @@ if GetLocale() == "zhCN" then
 		{ Format = "每5秒恢复(%d+)点生命值。", Types = { "HealthRegen" } },
 
 		{ Format = "坐骑速度提高", Value = 3, Types = { "Riding" } },
+		{ Format = "坐骑移动速度略微提升", Value = 2, Types = { "Riding" } },
 		{ Format = "秘银马刺", Value = 3, Types = { "Riding" } },
 		{ Format = "瑟银马刺", Value = 5, Types = { "Riding" } },
 
