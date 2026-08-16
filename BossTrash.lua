@@ -1,34 +1,34 @@
 gBossTrashNames = {
 	--MC--
-	["Core Rager"] = true,
-	["Firesworn"] = true,
-	["Flamewaker"] = true,
-	["Flamewaker Protector"] = true,
-	["Flamewaker Healer"] = true,
-	["Flamewaker Elite"] = true,
-	["Flamewaker Priest"] = true,
+	["熔火怒犬"] = true,
+	["火誓者"] = true,
+	["烈焰行者"] = true,
+	["烈焰行者护卫"] = true,
+	["烈焰行者医师"] = true,
+	["烈焰行者精英"] = true,
+	["烈焰行者祭司"] = true,
 
 	--ZG--
-	["Razzashi Cobra"] = true,
-	["Zealot Zath"] = true,
-	["Zealot Lor'Khan"] = true,
-	["Witherbark Speaker"] = true,
-	["Vilebranch Speaker"] = true,
+	["拉扎什眼镜蛇"] = true,
+	["狂热者扎斯"] = true,
+	["狂热者洛卡恩"] = true,
+	["枯木部族演讲者"] = true,
+	["邪枝部族演讲者"] = true,
 
 	--BWL--
-	["Grethok the Controller"] = true,
-	["Blackwing Guardsman"] = true,
+	["黑翼控制者"] = true,
+	["黑翼卫士"] = true,
 
 	--AQ--
-	["Sartura's Royal Guard"] = true,
+	["沙尔图拉的皇家卫兵"] = true,
 
 	--NAXX--
-	["Crypt Guard"] = true,
-	["Deathknight Understudy"] = true,
-	["Naxxramas Combat Dummy"] = true,
-	["Naxxramas Follower"] = true,
-	["Naxxramas Worshipper"] = true,
-	["Soldier of the Frozen Wastes"] = true,
-	["Soul Weaver"] = true,
-	["Unstoppable Abomination"] = true,
+	["地穴卫士"] = true,
+	["见习死亡骑士"] = true,
+	["纳克萨玛斯作战假人"] = true,
+	["纳克萨玛斯信徒"] = true,
+	["纳克萨玛斯侍僧"] = true,
+	["冰冻废土的士兵"] = true,
+	["织魂者"] = true,
+	["势不可挡的憎恶"] = true,
 }

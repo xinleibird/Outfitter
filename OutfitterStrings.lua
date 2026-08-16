@@ -1,406 +1,426 @@
-Outfitter_cVersion = "1.5.1";
+Outfitter_cVersion = "1.5.3"
 
-Outfitter_cTitle = "Outfitter";
-Outfitter_cTitleVersion = Outfitter_cTitle .. " " .. Outfitter_cVersion;
+Outfitter_cTitle = "Outfitter一键换装"
+Outfitter_cTitleVersion = Outfitter_cTitle
 
-Outfitter_cNameLabel = "Name:";
-Outfitter_cCreateUsingTitle = "Optimize for:";
-Outfitter_cUseCurrentOutfit = "Use Current Outfit";
-Outfitter_cUseEmptyOutfit = "Create Empty Outfit";
+Outfitter_cNameLabel = "名称:"
+Outfitter_cCreateUsingTitle = "优化目标:"
+Outfitter_cUseCurrentOutfit = "使用当前装备"
+Outfitter_cUseEmptyOutfit = "创建空套装"
 
-Outfitter_cOutfitterTabTitle = "Outfitter";
-Outfitter_cOptionsTabTitle = "Options";
-Outfitter_cAboutTabTitle = "About";
+Outfitter_cOutfitterTabTitle = "Outfitter"
+Outfitter_cOptionsTabTitle = "设置"
+Outfitter_cAboutTabTitle = "关于"
 
-Outfitter_cNewOutfit = "New Outfit";
-Outfitter_cRenameOutfit = "Rename Outfit";
+Outfitter_cNewOutfit = "新套装"
+Outfitter_cRenameOutfit = "重命名套装"
 
-Outfitter_cCompleteOutfits = "Complete wardrobes";
-Outfitter_cPartialOutfits = "Mix-n-match";
-Outfitter_cAccessoryOutfits = "Accessories";
-Outfitter_cSpecialOutfits = "Special occassions";
-Outfitter_cOddsNEndsOutfits = "Odds 'n ends";
+Outfitter_cCompleteOutfits = "完整套装"
+Outfitter_cPartialOutfits = "混搭套装"
+Outfitter_cAccessoryOutfits = "配件套装"
+Outfitter_cSpecialOutfits = "特殊场合"
+Outfitter_cOddsNEndsOutfits = "零碎杂物"
 
-Outfitter_cNormalOutfit = "Normal";
-Outfitter_cNakedOutfit = "Birthday Suit";
+Outfitter_cNormalOutfit = "普通"
+Outfitter_cNakedOutfit = "全裸"
 
-Outfitter_cFishingOutfit = "Fishing";
-Outfitter_cHerbalismOutfit = "Herbalism";
-Outfitter_cMiningOutfit = "Mining";
-Outfitter_cSkinningOutfit = "Skinning";
-Outfitter_cFireResistOutfit = "Fire Resist";
-Outfitter_cNatureResistOutfit = "Nature Resist";
-Outfitter_cShadowResistOutfit = "Shadow Resist";
-Outfitter_cArcaneResistOutfit = "Arcane Resist";
-Outfitter_cFrostResistOutfit = "Frost Resist";
+Outfitter_cFishingOutfit = "钓鱼"
+Outfitter_cHerbalismOutfit = "草药学"
+Outfitter_cMiningOutfit = "采矿"
+Outfitter_cSkinningOutfit = "剥皮"
+Outfitter_cFireResistOutfit = "火焰抗性"
+Outfitter_cNatureResistOutfit = "自然抗性"
+Outfitter_cShadowResistOutfit = "暗影抗性"
+Outfitter_cArcaneResistOutfit = "奥术抗性"
+Outfitter_cFrostResistOutfit = "冰霜抗性"
 
-Outfitter_cArgentDawnOutfit = "Argent Dawn";
-Outfitter_cRidingOutfit = "Riding";
-Outfitter_cDiningOutfit = "Dining";
-Outfitter_cBattlegroundOutfit = "Battleground";
-Outfitter_cABOutfit = "Battleground: Arathi Basin";
-Outfitter_cAVOutfit = "Battleground: Alterac Valley";
-Outfitter_cWSGOutfit = "Battleground: Warsong Gulch";
-Outfitter_cBROutfit = "Battleground: Blood Ring";
-Outfitter_cSGVOutfit = "Battleground: Sunnyglade Valley";
-Outfitter_cCityOutfit = "Around Town";
-Outfitter_cBossOutfit = "Boss Mobs";
-Outfitter_cLvl63Outfit = "Lvl63+";
-Outfitter_cTrashOutfit = "Trash Mobs";
-Outfitter_cCritterOutfit = "Critters";
+Outfitter_cArgentDawnOutfit = "银色黎明"
+Outfitter_cRidingOutfit = "骑乘"
+Outfitter_cDiningOutfit = "进食"
+Outfitter_cBattlegroundOutfit = "战场"
+Outfitter_cABOutfit = "战场: 阿拉希盆地"
+Outfitter_cAVOutfit = "战场: 奥特兰克山谷"
+Outfitter_cWSGOutfit = "战场: 战歌峡谷"
+Outfitter_cBROutfit = "战场: 鲜血之环"
+Outfitter_cSGVOutfit = "战场: 阳光林地山谷"
+Outfitter_cCityOutfit = "主城"
+Outfitter_cBossOutfit = "首领怪物"
+Outfitter_cLvl63Outfit = "63级以上怪物"
+Outfitter_cTrashOutfit = "小怪"
+Outfitter_cCritterOutfit = "小动物"
 
-Outfitter_cBeastTrashOutfit = "Beast Trash Mobs";
-Outfitter_cUndeadTrashOutfit = "Undead Trash Mobs";
-Outfitter_cDemonTrashOutfit = "Demon Trash Mobs";
+Outfitter_cBeastTrashOutfit = "野兽小怪"
+Outfitter_cUndeadTrashOutfit = "亡灵小怪"
+Outfitter_cDemonTrashOutfit = "恶魔小怪"
 
-Outfitter_cMountSpeedFormat = "Increases speed by (%d+)%%."; -- For detecting when mounted
-Outfitter_cMountLowFormat = "Slow and steady"; --乌龟坐骑
-Outfitter_cMountFreeFormat = "speed based on your Riding"; --特殊坐骑
+Outfitter_cMountSpeedFormat = "骑行技能提高速度"
+Outfitter_cMountLowFormat = "又慢又稳" --乌龟坐骑
+Outfitter_cMountFreeFormat = "骑术技能提高速度"
 
-Outfitter_cBagsFullError = "Outfitter: Can't remove %s because all bags are full";
-Outfitter_cDepositBagsFullError = "Outfitter: Can't deposit %s because all bank bags are full";
-Outfitter_cWithdrawBagsFullError = "Outfitter: Can't withdraw %s because all bags are full";
-Outfitter_cItemNotFoundError = "Outfitter: Can't find item %s";
-Outfitter_cItemAlreadyUsedError = "Outfitter: Can't put %s in the %s slot because it's already being used in another slot";
-Outfitter_cAddingItem = "Outfitter: Adding %s to %s outfit";
-Outfitter_cNameAlreadyUsedError = "Error: That name is already being used";
-Outfitter_cNoItemsWithStatError = "Warning: None of your items have that attribute";
+Outfitter_cBagsFullError = "Outfitter: 无法移除 %s，因为所有背包都已满"
+Outfitter_cDepositBagsFullError = "Outfitter: 无法存入 %s，因为所有银行背包都已满"
+Outfitter_cWithdrawBagsFullError = "Outfitter: 无法取出 %s，因为所有背包都已满"
+Outfitter_cItemNotFoundError = "Outfitter: 找不到物品 %s"
+Outfitter_cItemAlreadyUsedError = "Outfitter: 无法将 %s 放入 %s 槽位，因为它已被其他槽位使用。"
+Outfitter_cAddingItem = "Outfitter: 正在将 %s 添加到套装 %s"
+Outfitter_cNameAlreadyUsedError = "错误：该名称已被使用。"
+Outfitter_cNoItemsWithStatError = "警告：您的物品中没有任何一件拥有该属性。"
 
-Outfitter_cEnableAll = "Enable all";
-Outfitter_cEnableNone = "Enable none";
+Outfitter_cEnableAll = "全部启用"
+Outfitter_cEnableNone = "全部禁用"
 
-Outfitter_cConfirmDeleteMsg = "Are you sure you want to delete the outfit %s?";
-Outfitter_cConfirmUpdateMsg = "Are you sure you want to update the outfit %s to your current outfit?";
-Outfitter_cConfirmRebuildMsg = "Are you sure you want to rebuild the outfit %s?";
-Outfitter_cRebuild = "Rebuild";
-Outfitter_cUpdate = "Update";
-Outfitter_cUpdateToCurrent = "Update to current";
+Outfitter_cConfirmDeleteMsg = "您确定要删除套装 %s 吗？"
+Outfitter_cConfirmUpdateMsg = "您确定要将套装 %s 更新为当前装备吗？"
+Outfitter_cConfirmRebuildMsg = "您确定要重建套装 %s 吗？"
+Outfitter_cRebuild = "重建"
+Outfitter_cUpdate = "更新"
+Outfitter_cUpdateToCurrent = "更新为当前装备"
 
-Outfitter_cWesternPlaguelands = "Western Plaguelands";
-Outfitter_cEasternPlaguelands = "Eastern Plaguelands";
-Outfitter_cStratholme = "Stratholme";
-Outfitter_cScholomance = "Scholomance";
-Outfitter_cNaxxramas = "Naxxramas";
-Outfitter_cAlteracValley = "Alterac Valley";
-Outfitter_cArathiBasin = "Arathi Basin";
-Outfitter_cWarsongGulch = "Warsong Gulch";
-Outfitter_cBloodRing = "Blood Ring";
-Outfitter_cSunnygladeValley = "Sunnyglade Valley";
-Outfitter_cIronforge = "Ironforge";
-Outfitter_cCityOfIronforge = "City of Ironforge";
-Outfitter_cDarnassus = "Darnassus";
-Outfitter_cStormwind = "Stormwind City";
-Outfitter_cOrgrimmar = "Orgrimmar";
-Outfitter_cThunderBluff = "Thunder Bluff";
-Outfitter_cUndercity = "Undercity";
+Outfitter_cWesternPlaguelands = "西瘟疫之地"
+Outfitter_cEasternPlaguelands = "东瘟疫之地"
+Outfitter_cStratholme = "斯坦索姆"
+Outfitter_cScholomance = "通灵学院"
+Outfitter_cNaxxramas = "纳克萨玛斯"
+Outfitter_cAlteracValley = "奥特兰克山谷"
+Outfitter_cArathiBasin = "阿拉希盆地"
+Outfitter_cWarsongGulch = "战歌峡谷"
+Outfitter_cBloodRing = "鲜血之环"
+Outfitter_cSunnygladeValley = "阳光林地山谷"
+Outfitter_cIronforge = "铁炉堡"
+Outfitter_cCityOfIronforge = "铁炉堡"
+Outfitter_cDarnassus = "达纳苏斯"
+Outfitter_cStormwind = "暴风城"
+Outfitter_cOrgrimmar = "奥格瑞玛"
+Outfitter_cThunderBluff = "雷霆崖"
+Outfitter_cUndercity = "幽暗城"
 
---Instances
-Outfitter_cAQ20 = "Ruins of Ahn'Qiraj";
-Outfitter_cAQ40 = "Ahn'Qiraj";
-Outfitter_cZG = "Zul'Gurub";
-Outfitter_cES = "Emerald Sanctum";
-Outfitter_cBM = "The Black Morass";
-Outfitter_cK40 = "The Rock of Desolation";
+--副本
+Outfitter_cAQ20 = "安其拉废墟"
+Outfitter_cAQ40 = "安其拉"
+Outfitter_cZG = "祖尔格拉布"
+Outfitter_cES = "翡翠圣殿"
+Outfitter_cBM = "黑色沼泽"
+Outfitter_cK40 = "荒芜巨岩"
 
-Outfitter_cFishingPole = "Fishing Pole";
-Outfitter_cStrongFishingPole = "Strong Fishing Pole";
-Outfitter_cDarkwoodFishingPole = "Darkwood Fishing Pole";
-Outfitter_cBigIronFishingPole = "Big Iron Fishing Pole";
-Outfitter_cBlumpFishingPole = "Blump Family Fishing Pole";
-Outfitter_cNatPaglesFishingPole = "Nat Pagle's Extreme Angler FC-5000";
-Outfitter_cArcaniteFishingPole = "Arcanite Fishing Pole";
-Outfitter_cBarkskinFisher = "Barkskin Fisher";
+Outfitter_cFishingPole = "鱼竿"
+Outfitter_cStrongFishingPole = "强化钓鱼竿"
+Outfitter_cDarkwoodFishingPole = "黑木鱼竿"
+Outfitter_cBigIronFishingPole = "粗铁鱼竿"
+Outfitter_cBlumpFishingPole = "布拉普家族鱼竿"
+Outfitter_cNatPaglesFishingPole = "纳特·帕格的超级钓鱼竿FC-5000型"
+Outfitter_cArcaniteFishingPole = "奥金钓鱼竿"
+Outfitter_cBarkskinFisher = "树皮渔夫"
 
-Outfitter_cArgentDawnCommission = "Argent Dawn Commission";
-Outfitter_cSealOfTheDawn = "Seal of the Dawn";
-Outfitter_cRuneOfTheDawn = "Rune of the Dawn";
+Outfitter_cArgentDawnCommission = "银色黎明委任徽章"
+Outfitter_cSealOfTheDawn = "黎明之印"
+Outfitter_cRuneOfTheDawn = "黎明符文"
 
-Outfitter_cWhipOfEncouragement = "Whip of Encouragement";
-Outfitter_cGoblinCarKey = "Goblin Car Key";
-Outfitter_cGnomeCarKey = "Gnome Car Key";
-Outfitter_cCarrotOnAStick = "Carrot on a Stick";
+Outfitter_cWhipOfEncouragement = "鞭笞马鞭"
+Outfitter_cGoblinCarKey = "地精赛车钥匙"
+Outfitter_cGnomeCarKey = "侏儒赛车钥匙"
+Outfitter_cCarrotOnAStick = "棍子上的胡萝卜"
 
 Outfitter_cItemStatFormats = {
-	{ Format = "Stamina %+(%d+)", Types = { "Stamina" } },
-	{ Format = "Intellect %+(%d+)", Types = { "Intellect" } },
-	{ Format = "Agility %+(%d+)", Types = { "Agility" } },
-	{ Format = "Strength %+(%d+)", Types = { "Strength" } },
-	{ Format = "Spirit %+(%d+)", Types = { "Spirit" } },
-	{ Format = "Armor %+(%d+)", Types = { "Armor" } },
-	{ Format = "Defense %+(%d+)", Types = { "Defense" } },
-	{ Format = "Increased Defense %+(%d+)", Types = { "Defense" } },
+	{ Format = "耐力 %+(%d+)", Types = { "Stamina" } },
+	{ Format = "智力 %+(%d+)", Types = { "Intellect" } },
+	{ Format = "敏捷 %+(%d+)", Types = { "Agility" } },
+	{ Format = "力量 %+(%d+)", Types = { "Strength" } },
+	{ Format = "精神 %+(%d+)", Types = { "Spirit" } },
+	{ Format = "护甲 %+(%d+)", Types = { "Armor" } },
+	{ Format = "防御 %+(%d+)", Types = { "Defense" } },
+	{ Format = "防御技能 %+(%d+)", Types = { "Defense" } },
 
-	{ Format = "%+(%d+) Stamina", Types = { "Stamina" } },
-	{ Format = "%+(%d+) Intellect", Types = { "Intellect" } },
-	{ Format = "%+(%d+) Agility", Types = { "Agility" } },
-	{ Format = "%+(%d+) Strength", Types = { "Strength" } },
-	{ Format = "%+(%d+) Spirit", Types = { "Spirit" } },
-	{ Format = "(%d+) Armor", Types = { "Armor" } },
-	{ Format = "%+(%d+) Attack Power", Types = { "Attack" } },
+	{ Format = "%+(%d+) 耐力", Types = { "Stamina" } },
+	{ Format = "%+(%d+) 智力", Types = { "Intellect" } },
+	{ Format = "%+(%d+) 敏捷", Types = { "Agility" } },
+	{ Format = "%+(%d+) 力量", Types = { "Strength" } },
+	{ Format = "%+(%d+) 精神", Types = { "Spirit" } },
+	{ Format = "(%d+) 护甲", Types = { "Armor" } },
+	{ Format = "%+(%d+) 攻击强度", Types = { "Attack" } },
 
-	{ Format = "All Stats %+(%d+)", Types = { "Stamina", "Intellect", "Agility", "Strength", "Spirit" } },
+	{ Format = "所有属性 %+(%d+)", Types = { "Stamina", "Intellect", "Agility", "Strength", "Spirit" } },
 
-	{ Format = "Mana %+(%d+)", Types = { "Mana" } },
-	{ Format = "Health %+(%d+)", Types = { "Health" } },
+	{ Format = "法力值 %+(%d+)", Types = { "Mana" } },
+	{ Format = "生命值 %+(%d+)", Types = { "Health" } },
 
-	{ Format = "%+(%d+) mana every 5 sec.", Types = { "ManaRegen" } },
-	{ Format = "Restores (%d+) mana per 5 sec.", Types = { "ManaRegen" } },
+	{ Format = "%+(%d+) 法力值回复.", Types = { "ManaRegen" } },
+	{ Format = "每5秒回复(%d+)点法力值。", Types = { "ManaRegen" } },
 
-	{ Format = "%+(%d+) health every 5 sec.", Types = { "HealthRegen" } },
-	{ Format = "Restores (%d+) health every 5 sec.", Types = { "HealthRegen" } },
-	{ Format = "Restores (%d+) health per 5 sec.", Types = { "HealthRegen" } },
+	{ Format = "%+(%d+) 每5秒回复生命。", Types = { "HealthRegen" } },
+	{ Format = "每5秒回复(%d+)点生命值。", Types = { "HealthRegen" } },
+	{ Format = "每5秒恢复(%d+)点生命值。", Types = { "HealthRegen" } },
 
-	{ Format = "Minor Mount Speed Increase", Value = 3, Types = { "Riding" } },
-	{ Format = "Slightly Increased Mount Speed", Value = 2, Types = { "Riding" } },
-	{ Format = "Mithril Spurs", Value = 3, Types = { "Riding" } },
-	{ Format = "Thorium Spurs", Value = 5, Types = { "Riding" } },
+	{ Format = "坐骑速度提高", Value = 3, Types = { "Riding" } },
+	{ Format = "坐骑移动速度略微提升", Value = 2, Types = { "Riding" } },
+	{ Format = "秘银马刺", Value = 3, Types = { "Riding" } },
+	{ Format = "瑟银马刺", Value = 5, Types = { "Riding" } },
 
-	{ Format = "%+(%d+) Fire Resistance", Types = { "FireResist" } },
-	{ Format = "%+(%d+) Nature Resistance", Types = { "NatureResist" } },
-	{ Format = "%+(%d+) Frost Resistance", Types = { "FrostResist" } },
-	{ Format = "%+(%d+) Shadow Resistance", Types = { "ShadowResist" } },
-	{ Format = "%+(%d+) Arcane Resistance", Types = { "ArcaneResist" } },
-	{ Format = "%+(%d+) All Resistances", Types = { "FireResist", "NatureResist", "FrostResist", "ShadowResist", "ArcaneResist" } },
+	{ Format = "%+(%d+) 火焰抗性", Types = { "FireResist" } },
+	{ Format = "%+(%d+) 自然抗性", Types = { "NatureResist" } },
+	{ Format = "%+(%d+) 冰霜抗性", Types = { "FrostResist" } },
+	{ Format = "%+(%d+) 暗影抗性", Types = { "ShadowResist" } },
+	{ Format = "%+(%d+) 奥术抗性", Types = { "ArcaneResist" } },
+	{
+		Format = "%+(%d+) 所有抗性",
+		Types = { "FireResist", "NatureResist", "FrostResist", "ShadowResist", "ArcaneResist" },
+	},
 
-	{ Format = "Weapon Damage %+(%d+)", Types = { "MeleeDmg" } },
-	{ Format = "Improves your chance to hit by (%d+)%%", Types = { "MeleeHit" } },
-	{ Format = "Improves your chance to get a critical strike by (%d+)%%", Types = { "MeleeCrit" } },
-	{ Format = "Increases your chance to dodge an attack by (%d+)%%", Types = { "Dodge" } },
-	{ Format = "Damage %+(%d+)", Types = { "MeleeDmg" } },
-	{ Format = "(%d+) Block", Types = { "Block" } },
-	{ Format = "Block Value %+(%d+)", Types = { "Block" } },
-	{ Format = "Increases the block value of your shield by (%d+)", Types = { "Block" } },
+	{ Format = "武器伤害 %+(%d+)", Types = { "MeleeDmg" } },
+	{ Format = "使你击中目标的几率提高(%d+)%%", Types = { "MeleeHit" } },
+	{ Format = "使你造成致命一击的几率提高(%d+)%%", Types = { "MeleeCrit" } },
+	{ Format = "使你躲闪攻击的几率提高(%d+)%%", Types = { "Dodge" } },
+	{ Format = "伤害 %+(%d+)", Types = { "MeleeDmg" } },
+	{ Format = "盾牌格挡攻击的几率提高(%d+)", Types = { "Block" } },
+	{ Format = "格挡值提高(%d+)", Types = { "Block" } },
+	{ Format = "使你的盾牌的格挡值提高(%d+)", Types = { "Block" } },
 
-	{ Format = "Increased Fishing %+(%d+)%.", Types = { "Fishing" } },
-	{ Format = "Fishing %+(%d+)", Types = { "Fishing" } },
-	{ Format = "Herbalism %+(%d+)", Types = { "Herbalism" } },
-	{ Format = "Mining %+(%d+)", Types = { "Mining" } },
-	{ Format = "Skinning %+(%d+)", Types = { "Skinning" } },
+	{ Format = "钓鱼提高 %+(%d+)%。", Types = { "Fishing" } },
+	{ Format = "钓鱼 %+(%d+)", Types = { "Fishing" } },
+	{ Format = "草药学 %+(%d+)", Types = { "Herbalism" } },
+	{ Format = "挖矿 %+(%d+)", Types = { "Mining" } },
+	{ Format = "剥皮 %+(%d+)", Types = { "Skinning" } },
 
-	{ Format = "Improves your chance to get a critical strike with spells by (%d+)%%", Types = { "SpellCrit" } },
-	{ Format = "Improves your chance to hit with spells by (%d+)%%", Types = { "SpellHit" } },
-	{ Format = "Increases damage and healing done by magical spells and effects by up to (%d+)", Types = { "SpellDmg", "ShadowDmg", "FireDmg", "FrostDmg", "ArcaneDmg", "NatureDmg", "Healing" } },
-	{ Format = "Increases healing done by spells and effects by up to (%d+)", Types = { "Healing" } },
-	{ Format = "Healing Spells %+(%d+)", Types = { "Healing" } },
-	{ Format = "%+(%d+) Healing Spells", Types = { "Healing" } },
+	{ Format = "使你的法术造成致命一击的几率提高(%d+)%%", Types = { "SpellCrit" } },
+	{ Format = "使你的法术击中敌人的几率提高(%d+)%%", Types = { "SpellHit" } },
+	{
+		Format = "提高所有法术和魔法效果所造成的伤害和治疗效果，最多(%d+)点",
+		Types = { "SpellDmg", "ShadowDmg", "FireDmg", "FrostDmg", "ArcaneDmg", "NatureDmg", "Healing" },
+	},
+	{ Format = "提高法术所造成的治疗效果，最多(%d+)点", Types = { "Healing" } },
+	{ Format = "治疗法术 %+(%d+)", Types = { "Healing" } },
+	{ Format = "%+(%d+) 治疗法术", Types = { "Healing" } },
 
-	{ Format = "%+(%d+) Fire Spell Damage", Types = { "FireDmg" } },
-	{ Format = "%+(%d+) Shadow Spell Damage", Types = { "ShadowDmg" } },
-	{ Format = "%+(%d+) Frost Spell Damage", Types = { "FrostDmg" } },
-	{ Format = "%+(%d+) Arcane Spell Damage", Types = { "ArcaneDmg" } },
-	{ Format = "%+(%d+) Nature Spell Damage", Types = { "NatureDmg" } },
+	{ Format = "%+(%d+) 火焰法术伤害", Types = { "FireDmg" } },
+	{ Format = "%+(%d+) 暗影法术伤害", Types = { "ShadowDmg" } },
+	{ Format = "%+(%d+) 冰霜法术伤害", Types = { "FrostDmg" } },
+	{ Format = "%+(%d+) 奥术法术伤害", Types = { "ArcaneDmg" } },
+	{ Format = "%+(%d+) 自然法术伤害", Types = { "NatureDmg" } },
 
-	{ Format = "Increases damage done by Fire spells and effects by up to (%d+)", Types = { "FireDmg" } },
-	{ Format = "Increases damage done by Shadow spells and effects by up to (%d+)", Types = { "ShadowDmg" } },
-	{ Format = "Increases damage done by Frost spells and effects by up to (%d+)", Types = { "FrostDmg" } },
-	{ Format = "Increases damage done by Arcane spells and effects by up to (%d+)", Types = { "ArcaneDmg" } },
-	{ Format = "Increases damage done by Nature spells and effects by up to (%d+)", Types = { "NatureDmg" } },
-};
+	{ Format = "提高火焰法术和效果所造成的伤害，最多(%d+)点", Types = { "FireDmg" } },
+	{ Format = "提高暗影法术和效果所造成的伤害，最多(%d+)点", Types = { "ShadowDmg" } },
+	{ Format = "提高冰霜法术和效果所造成的伤害，最多(%d+)点", Types = { "FrostDmg" } },
+	{ Format = "提高奥术法术和效果所造成的伤害，最多(%d+)点", Types = { "ArcaneDmg" } },
+	{ Format = "提高自然法术和效果所造成的伤害，最多(%d+)点", Types = { "NatureDmg" } },
+}
 
-Outfitter_cAgilityStatName = "Agility";
-Outfitter_cArmorStatName = "Armor";
-Outfitter_cDefenseStatName = "Defense";
-Outfitter_cIntellectStatName = "Intellect";
-Outfitter_cSpiritStatName = "Spirit";
-Outfitter_cStaminaStatName = "Stamina";
-Outfitter_cStrengthStatName = "Strength";
+Outfitter_cAgilityStatName = "敏捷"
+Outfitter_cArmorStatName = "护甲"
+Outfitter_cDefenseStatName = "防御"
+Outfitter_cIntellectStatName = "智力"
+Outfitter_cSpiritStatName = "精神"
+Outfitter_cStaminaStatName = "耐力"
+Outfitter_cStrengthStatName = "力量"
 
-Outfitter_cManaRegenStatName = "Mana Regeneration";
-Outfitter_cHealthRegenStatName = "Health Regeneration";
+Outfitter_cManaRegenStatName = "法力回复"
+Outfitter_cHealthRegenStatName = "生命回复"
 
-Outfitter_cSpellCritStatName = "Spell Critical Strike";
-Outfitter_cSpellHitStatName = "Spell Chance to Hit";
-Outfitter_cSpellDmgStatName = "Spell Damage";
-Outfitter_cFrostDmgStatName = "Frost Spell Damage";
-Outfitter_cFireDmgStatName = "Fire Spell Damage";
-Outfitter_cArcaneDmgStatName = "Arcane Spell Damage";
-Outfitter_cShadowDmgStatName = "Shadow Spell Damage";
-Outfitter_cNatureDmgStatName = "Nature Spell Damage";
-Outfitter_cHealingStatName = "Healing";
+Outfitter_cSpellCritStatName = "法术致命一击"
+Outfitter_cSpellHitStatName = "法术命中"
+Outfitter_cSpellDmgStatName = "法术伤害"
+Outfitter_cFrostDmgStatName = "冰霜法术伤害"
+Outfitter_cFireDmgStatName = "火焰法术伤害"
+Outfitter_cArcaneDmgStatName = "奥术法术伤害"
+Outfitter_cShadowDmgStatName = "暗影法术伤害"
+Outfitter_cNatureDmgStatName = "自然法术伤害"
+Outfitter_cHealingStatName = "治疗"
 
-Outfitter_cMeleeCritStatName = "Melee Critical Strike";
-Outfitter_cMeleeHitStatName = "Melee Chance to Hit";
-Outfitter_cMeleeDmgStatName = "Melee Damage";
-Outfitter_cAttackStatName = "Attack Power";
-Outfitter_cDodgeStatName = "Dodge";
+Outfitter_cMeleeCritStatName = "近战暴击"
+Outfitter_cMeleeHitStatName = "近战命中"
+Outfitter_cMeleeDmgStatName = "近战伤害"
+Outfitter_cAttackStatName = "攻击强度"
+Outfitter_cDodgeStatName = "躲闪"
 
-Outfitter_cArcaneResistStatName = "Arcane Resistance";
-Outfitter_cFireResistStatName = "Fire Resistance";
-Outfitter_cFrostResistStatName = "Frost Resistance";
-Outfitter_cNatureResistStatName = "Nature Resistance";
-Outfitter_cShadowResistStatName = "Shadow Resistance";
+Outfitter_cArcaneResistStatName = "奥术抗性"
+Outfitter_cFireResistStatName = "火焰抗性"
+Outfitter_cFrostResistStatName = "冰霜抗性"
+Outfitter_cNatureResistStatName = "自然抗性"
+Outfitter_cShadowResistStatName = "暗影抗性"
 
-Outfitter_cFishingStatName = "Fishing";
-Outfitter_cHerbalismStatName = "Herbalism";
-Outfitter_cMiningStatName = "Mining";
-Outfitter_cSkinningStatName = "Skinning";
+Outfitter_cFishingStatName = "钓鱼"
+Outfitter_cHerbalismStatName = "草药学"
+Outfitter_cMiningStatName = "采矿"
+Outfitter_cSkinningStatName = "剥皮"
 
-Outfitter_cOptionsTitle = "Outfitter Options";
-Outfitter_cShowMinimapButton = "Show Minimap Button";
-Outfitter_cShowMinimapButtonOnDescription = "Turn this off if you don't want the Outfitter button on your minimap cluster";
-Outfitter_cShowMinimapButtonOffDescription = "Turn this on if you want the Outfitter button on your minimap cluster";
-Outfitter_cRememberVisibility = "Remember cloak and helm settings";
-Outfitter_cRememberVisibilityOnDescription = "Turn this off if you want to use a single show/hide setting for all cloaks and helms";
-Outfitter_cRememberVisibilityOffDescription = "Turn this on if you want Outfitter to remember your preference for showing or hiding each cloak and helm individually";
-Outfitter_cShowHotkeyMessages = "Show key binding outfit changes";
-Outfitter_cShowHotkeyMessagesOnDescription = "Turn this off if you don't want to see a message when you change outfits using a key binding";
-Outfitter_cShowHotkeyMessagesOffDescription = "Turn this on if you want to see a message when you change outfits using a key binding";
-Outfitter_cShowCurrentOutfit = "Display current outfit in small window (Ctrl+Alt+Shift to drag)";
-Outfitter_cHideDisabledOutfits = "Hide disabled outfits from list";
+Outfitter_cOptionsTitle = "Outfitter 设置"
+Outfitter_cShowMinimapButton = "显示小地图按钮"
+Outfitter_cShowMinimapButtonOnDescription =
+	"如果你不想在小地图上显示 Outfitter 按钮，请关闭此选项。"
+Outfitter_cShowMinimapButtonOffDescription =
+	"如果你希望在小地图上显示 Outfitter 按钮，请打开此选项。"
+Outfitter_cRememberVisibility = "记住披风和头盔的显示设置"
+Outfitter_cRememberVisibilityOnDescription =
+	"如果你希望所有披风和头盔都使用统一的显示/隐藏设置，请关闭此选项。"
+Outfitter_cRememberVisibilityOffDescription =
+	"如果你希望 Outfitter 记住每件披风和头盔单独的显示/隐藏偏好，请打开此选项。"
+Outfitter_cShowHotkeyMessages = "显示按键换装消息"
+Outfitter_cShowHotkeyMessagesOnDescription =
+	"如果你不想在使用按键绑定换装时看到消息，请关闭此选项。"
+Outfitter_cShowHotkeyMessagesOffDescription =
+	"如果你希望在使用按键绑定换装时看到消息，请打开此选项。"
+Outfitter_cShowCurrentOutfit = "显示当前套装（Ctrl+Alt+Shift 拖动）"
+Outfitter_cHideDisabledOutfits = "隐藏已禁用的套装"
 
-Outfitter_cEquipOutfitMessageFormat = "Outfitter: %s equipped";
-Outfitter_cUnequipOutfitMessageFormat = "Outfitter: %s unequipped";
+Outfitter_cEquipOutfitMessageFormat = "Outfitter: 已装备 %s"
+Outfitter_cUnequipOutfitMessageFormat = "Outfitter: 已卸下 %s"
 
-Outfitter_cAboutTitle = "About Outfitter";
-Outfitter_cAuthor = "Designed and written by John Stephen\nUpdated for TurtleWoW by |cff5BCEFAL|cffF5A9B8e|cffFFFFFFx|cffF5A9B8i|cff5BCEFAe|r";
-Outfitter_cTestersTitle = "Beta Testers";
-Outfitter_cTestersNames = "Airmid, Desiree, Fizzlebang, Harper, Kallah and Sumitra";
-Outfitter_cSpecialThanksTitle = "Special thanks for their support to";
-Outfitter_cSpecialThanksNames = "Brian, Dave, Glenn, Leah, Mark, The Mighty Pol, SFC and Forge";
-Outfitter_cGuildURL = "";
-Outfitter_cGuildURL2 = "";
+Outfitter_cAboutTitle = "关于 Outfitter"
+Outfitter_cAuthor =
+	"设计编写：John Stephen\nTurtleWoW 更新：|cff5BCEFAL|cffF5A9B8e|cffFFFFFFx|cffF5A9B8i|cff5BCEFAc|r"
+Outfitter_cTestersTitle = "测试人员"
+Outfitter_cTestersNames = "Airmid、Desiree、Fizzlebang、Harper、Kallah 和 Sumitra"
+Outfitter_cSpecialThanksTitle = "特别感谢以下人员的支持"
+Outfitter_cSpecialThanksNames = "Brian、Dave、Glenn、Leah、Mark、The Mighty Pol、SFC 和 Forge"
+Outfitter_cGuildURL = ""
+Outfitter_cGuildURL2 = ""
 
-Outfitter_cOpenOutfitter = "Open Outfitter";
+Outfitter_cOpenOutfitter = "打开 Outfitter"
 
-Outfitter_cArgentDawnOutfitDescription = "This outfit will automatically be worn whenever you're in the Plaguelands";
-Outfitter_cRidingOutfitDescription = "This outfit will automatically be worn whenever you're mounted";
-Outfitter_cDiningOutfitDescription = "This outfit will automatically be worn whenever you're eating or drinking";
-Outfitter_cBattlegroundOutfitDescription = "This outfit will automatically be worn whenever you're in a battleground";
-Outfitter_cArathiBasinOutfitDescription = "This outfit will automatically be worn whenever you're in the Arathi Basin battleground";
-Outfitter_cAlteracValleyOutfitDescription = "This outfit will automatically be worn whenever you're in the Alterac Valley battleground";
-Outfitter_cWarsongGulchOutfitDescription = "This outfit will automatically be worn whenever you're in the Warsong Gulch battleground";
-Outfitter_cBloodRingOutfitDescription = "This outfit will automatically be worn whenever you're in the Blood Ring battleground";
-Outfitter_cSunnygladeValleyOutfitDescription = "This outfit will automatically be worn whenever you're in the Sunnyglade Valley battleground";
-Outfitter_cCityOutfitDescription = "This outfit will automatically be worn whenever you're in a friendly major city";
-Outfitter_cBossOutfitDescription = "This outfit will automatically be worn whenever you target level 63+ Boss mobs";
-Outfitter_cLvl63OutfitDescription = "This outfit will automatically be worn whenever you target level 63+ mobs";
-Outfitter_cTrashOutfitDescription = "This outfit will automatically be worn whenever you target level <63 mobs";
-Outfitter_cCritterOutfitDescription = "This outfit will automatically be worn whenever you target a critter";
-Outfitter_cBeastTrashOutfitDescription = "This outfit will automatically be worn whenever you target beasts level <63 mobs";
-Outfitter_cUndeadTrashOutfitDescription = "This outfit will automatically be worn whenever you target undead level <63 mobs";
-Outfitter_cDemonTrashOutfitDescription = "This outfit will automatically be worn whenever you target demons level <63 mobs";
+Outfitter_cArgentDawnOutfitDescription = "当你在瘟疫之地时，将自动穿上这套装备"
+Outfitter_cRidingOutfitDescription = "当你骑乘时，将自动穿上这套装备"
+Outfitter_cDiningOutfitDescription = "当你进食或喝水时，将自动穿上这套装备"
+Outfitter_cBattlegroundOutfitDescription = "当你在战场中时，将自动穿上这套装备"
+Outfitter_cArathiBasinOutfitDescription = "当你在阿拉希盆地战场时，将自动穿上这套装备"
+Outfitter_cAlteracValleyOutfitDescription = "当你在奥特兰克山谷战场时，将自动穿上这套装备"
+Outfitter_cWarsongGulchOutfitDescription = "当你在战歌峡谷战场时，将自动穿上这套装备"
+Outfitter_cBloodRingOutfitDescription = "当你在鲜血之环战场时，将自动穿上这套装备"
+Outfitter_cSunnygladeValleyOutfitDescription = "当你在阳光林地山谷战场时，将自动穿上这套装备"
+Outfitter_cCityOutfitDescription = "当你在友好的主城中时，将自动穿上这套装备"
+Outfitter_cBossOutfitDescription = "当你选中 63 级以上的首领怪物时，将自动穿上这套装备"
+Outfitter_cLvl63OutfitDescription = "当你选中 63 级以上的怪物时，将自动穿上这套装备"
+Outfitter_cTrashOutfitDescription = "当你选中 63 级以下的小怪时，将自动穿上这套装备"
+Outfitter_cCritterOutfitDescription = "当你选中小动物时，将自动穿上这套装备"
+Outfitter_cBeastTrashOutfitDescription = "当你选中 63 级以下的野兽小怪时，将自动穿上这套装备"
+Outfitter_cUndeadTrashOutfitDescription =
+	"当你选中 63 级以下的亡灵小怪时，将自动穿上这套装备"
+Outfitter_cDemonTrashOutfitDescription = "当你选中 63 级以下的恶魔小怪时，将自动穿上这套装备"
 
-Outfitter_cKeyBinding = "Key Binding";
+Outfitter_cKeyBinding = "按键绑定"
 
-BINDING_HEADER_OUTFITTER_TITLE = Outfitter_cTitle;
+BINDING_HEADER_OUTFITTER_TITLE = Outfitter_cTitle
 
-BINDING_NAME_OUTFITTER_OUTFIT1 = "Outfit 1";
-BINDING_NAME_OUTFITTER_OUTFIT2 = "Outfit 2";
-BINDING_NAME_OUTFITTER_OUTFIT3 = "Outfit 3";
-BINDING_NAME_OUTFITTER_OUTFIT4 = "Outfit 4";
-BINDING_NAME_OUTFITTER_OUTFIT5 = "Outfit 5";
-BINDING_NAME_OUTFITTER_OUTFIT6 = "Outfit 6";
-BINDING_NAME_OUTFITTER_OUTFIT7 = "Outfit 7";
-BINDING_NAME_OUTFITTER_OUTFIT8 = "Outfit 8";
-BINDING_NAME_OUTFITTER_OUTFIT9 = "Outfit 9";
-BINDING_NAME_OUTFITTER_OUTFIT10 = "Outfit 10";
+BINDING_NAME_OUTFITTER_OUTFIT1 = "套装 1"
+BINDING_NAME_OUTFITTER_OUTFIT2 = "套装 2"
+BINDING_NAME_OUTFITTER_OUTFIT3 = "套装 3"
+BINDING_NAME_OUTFITTER_OUTFIT4 = "套装 4"
+BINDING_NAME_OUTFITTER_OUTFIT5 = "套装 5"
+BINDING_NAME_OUTFITTER_OUTFIT6 = "套装 6"
+BINDING_NAME_OUTFITTER_OUTFIT7 = "套装 7"
+BINDING_NAME_OUTFITTER_OUTFIT8 = "套装 8"
+BINDING_NAME_OUTFITTER_OUTFIT9 = "套装 9"
+BINDING_NAME_OUTFITTER_OUTFIT10 = "套装 10"
 
-Outfitter_cDisableOutfit = "Disable Outfit";
-Outfitter_cDisableOutfitInBG = "Disable Outfit When in Battlegrounds";
-Outfitter_cDisableOutfitInInstance = "Disable Outfit When in Instances";
-Outfitter_cDisabledOutfitName = "%s (Disabled)";
+Outfitter_cDisableOutfit = "禁用套装"
+Outfitter_cDisableOutfitInBG = "在战场中禁用此套装"
+Outfitter_cDisableOutfitInInstance = "在副本中禁用此套装"
+Outfitter_cDisabledOutfitName = "%s（已禁用）"
 
-Outfitter_cMinimapButtonTitle = "Outfitter Minimap Button";
-Outfitter_cMinimapButtonDescription = "Click to select a different outfit or drag to re-position this button.";
+Outfitter_cMinimapButtonTitle = "Outfitter 小地图按钮"
+Outfitter_cMinimapButtonDescription = "单击选择不同的套装，或拖动来重新定位此按钮。"
 
-Outfitter_cDruidClassName = "Druid";
-Outfitter_cHunterClassName = "Hunter";
-Outfitter_cMageClassName = "Mage";
-Outfitter_cPaladinClassName = "Paladin";
-Outfitter_cPriestClassName = "Priest";
-Outfitter_cRogueClassName = "Rogue";
-Outfitter_cShamanClassName = "Shaman";
-Outfitter_cWarlockClassName = "Warlock";
-Outfitter_cWarriorClassName = "Warrior";
+Outfitter_cDruidClassName = "德鲁伊"
+Outfitter_cHunterClassName = "猎人"
+Outfitter_cMageClassName = "法师"
+Outfitter_cPaladinClassName = "圣骑士"
+Outfitter_cPriestClassName = "牧师"
+Outfitter_cRogueClassName = "盗贼"
+Outfitter_cShamanClassName = "萨满祭司"
+Outfitter_cWarlockClassName = "术士"
+Outfitter_cWarriorClassName = "战士"
 
-Outfitter_cBattleStance = "Battle Stance";
-Outfitter_cDefensiveStance = "Defensive Stance";
-Outfitter_cBerserkerStance = "Berserker Stance";
+Outfitter_cBattleStance = "战斗姿态"
+Outfitter_cDefensiveStance = "防御姿态"
+Outfitter_cBerserkerStance = "狂暴姿态"
 
-Outfitter_cWarriorBattleStance = "Warrior: Battle Stance";
-Outfitter_cWarriorDefensiveStance = "Warrior: Defensive Stance";
-Outfitter_cWarriorBerserkerStance = "Warrior: Berserker Stance";
+Outfitter_cWarriorBattleStance = "战士: 战斗姿态"
+Outfitter_cWarriorDefensiveStance = "战士: 防御姿态"
+Outfitter_cWarriorBerserkerStance = "战士: 狂暴姿态"
 
-Outfitter_cBearForm = "Bear Form";
-Outfitter_cCatForm = "Cat Form";
-Outfitter_cAquaticForm = "Aquatic Form";
-Outfitter_cTravelForm = "Travel Form";
-Outfitter_cDireBearForm = "Dire Bear Form";
-Outfitter_cMoonkinForm = "Moonkin Form";
+Outfitter_cBearForm = "熊形态"
+Outfitter_cCatForm = "猎豹形态"
+Outfitter_cAquaticForm = "水栖形态"
+Outfitter_cTravelForm = "旅行形态"
+Outfitter_cDireBearForm = "巨熊形态"
+Outfitter_cMoonkinForm = "枭兽形态"
 
-Outfitter_cGhostWolfForm = "Ghost Wolf";
+Outfitter_cGhostWolfForm = "幽魂之狼"
 
-Outfitter_cStealth = "Stealth";
+Outfitter_cStealth = "潜行"
 
-Outfitter_cDruidBearForm = "Druid: Bear Form";
-Outfitter_cDruidCatForm = "Druid: Cat Form";
-Outfitter_cDruidAquaticForm = "Druid: Aquatic Form";
-Outfitter_cDruidTravelForm = "Druid: Travel Form";
-Outfitter_cDruidMoonkinForm = "Druid: Moonkin Form";
+Outfitter_cDruidBearForm = "德鲁伊: 熊形态"
+Outfitter_cDruidCatForm = "德鲁伊: 猎豹形态"
+Outfitter_cDruidAquaticForm = "德鲁伊: 水栖形态"
+Outfitter_cDruidTravelForm = "德鲁伊: 旅行形态"
+Outfitter_cDruidMoonkinForm = "德鲁伊: 枭兽形态"
 
-Outfitter_cPriestShadowform = "Priest: Shadowform";
+Outfitter_cPriestShadowform = "牧师: 暗影形态"
 
-Outfitter_cRogueStealth = "Rogue: Stealth";
+Outfitter_cRogueStealth = "盗贼: 潜行"
 
-Outfitter_cShamanGhostWolf = "Shaman: Ghost Wolf";
+Outfitter_cShamanGhostWolf = "萨满祭司: 幽魂之狼"
 
-Outfitter_cHunterMonkey = "Hunter: Monkey";
-Outfitter_cHunterHawk = "Hunter: Hawk";
-Outfitter_cHunterCheetah = "Hunter: Cheetah";
-Outfitter_cHunterPack = "Hunter: Pack";
-Outfitter_cHunterBeast = "Hunter: Beast";
-Outfitter_cHunterWild = "Hunter: Wild";
+Outfitter_cHunterMonkey = "猎人: 灵猴"
+Outfitter_cHunterHawk = "猎人: 雄鹰"
+Outfitter_cHunterCheetah = "猎人: 猎豹"
+Outfitter_cHunterPack = "猎人: 豹群"
+Outfitter_cHunterBeast = "猎人: 野兽"
+Outfitter_cHunterWild = "猎人: 野性"
 
-Outfitter_cMageEvocate = "Mage: Evocate";
+Outfitter_cMageEvocate = "法师: 唤醒"
 
-Outfitter_cAspectOfTheCheetah = "Aspect of the Cheetah";
-Outfitter_cAspectOfThePack = "Aspect of the Pack";
-Outfitter_cAspectOfTheBeast = "Aspect of the Beast";
-Outfitter_cAspectOfTheWild = "Aspect of the Wild";
-Outfitter_cEvocate = "Evocation";
+Outfitter_cAspectOfTheCheetah = "猎豹守护"
+Outfitter_cAspectOfThePack = "豹群守护"
+Outfitter_cAspectOfTheBeast = "野兽守护"
+Outfitter_cAspectOfTheWild = "野性守护"
+Outfitter_cEvocate = "唤醒"
 
-Outfitter_cCritter = "Critter";
-Outfitter_cBeastCreatureType = "Beast";
-Outfitter_cUndeadCreatureType = "Undead";
-Outfitter_cDemonCreatureType = "Demon";
+Outfitter_cCritter = "小动物"
+Outfitter_cBeastCreatureType = "野兽"
+Outfitter_cUndeadCreatureType = "亡灵"
+Outfitter_cDemonCreatureType = "恶魔"
 
-Outfitter_cCompleteCategoryDescripton = "Complete outfits have items specified for every slot and will replace all other outfits when worn.";
-Outfitter_cPartialCategoryDescription = "Mix-n-match outfits have only some slots specified, but not all.  When equipped, they are added on top of your selcted Complete outfit, replacing any other Mix-n-match or Accessory outfits selected.";
-Outfitter_cAccessoryCategoryDescription = "Accessory outfits have only some slots specified, but not all.  Unlike mix-n-match, you can select as many Accessory outfits as you like and they will all be combined together and worn on top of your selected Complete and Mix-n-match outfits.";
-Outfitter_cSpecialCategoryDescription = "Special Occassion outfits are automatically worn whenever the occassion warrants it.  They are worn over all other selected outfits.";
-Outfitter_cOddsNEndsCategoryDescription = "Odds 'n ends is a list of items which you haven't used in any of your outfits.  This may be useful in ensuring that you're using all of your items or that you're not carrying around excess baggage.";
+Outfitter_cCompleteCategoryDescripton =
+	"完整套装为每个槽位都指定了物品，穿上时会替换其他所有套装。"
+Outfitter_cPartialCategoryDescription =
+	"混搭套装只指定了部分槽位，而非全部。穿上时，它们会叠加在你所选的完整套装之上，并替换其他已选的混搭套装或配件套装。"
+Outfitter_cAccessoryCategoryDescription =
+	"配件套装同样只指定部分槽位，而非全部。与混搭套装不同，你可以随心选择多件配件套装，它们会全部组合起来，穿在你所选的完整套装和混搭套装之上。"
+Outfitter_cSpecialCategoryDescription =
+	"特殊场合套装会在需要时自动穿上，并覆盖在其他所有已选套装之上。"
+Outfitter_cOddsNEndsCategoryDescription =
+	"零碎杂物列出的是你在任何套装中都未使用过的物品。这有助于确保你物尽其用，也避免随身携带过多杂物。"
 
-Outfitter_cRebuildOutfitFormat = "Rebuild for %s";
+Outfitter_cRebuildOutfitFormat = "重建 %s"
 
-Outfitter_cTranslationCredit = " ";
+Outfitter_cTranslationCredit = " "
 
-Outfitter_cSlotEnableTitle = "Slot Enable";
-Outfitter_cSlotEnableDescription = "Select this if you want the item in this slot to be equipped when changing to the selected outfit.  If not selected then this slot will not be modified when changing to the selected outfit.";
+Outfitter_cSlotEnableTitle = "启用槽位"
+Outfitter_cSlotEnableDescription =
+	"选中后，切换到该套装时此槽位的物品会被穿上。未选中时，切换到该套装不会改动此槽位。"
 
-Outfitter_cFinger0SlotName = "First Finger";
-Outfitter_cFinger1SlotName = "Second Finger";
+Outfitter_cFinger0SlotName = "戒指 1"
+Outfitter_cFinger1SlotName = "戒指 2"
 
-Outfitter_cTrinket0SlotName = "First Trinket";
-Outfitter_cTrinket1SlotName = "Second Trinket";
+Outfitter_cTrinket0SlotName = "饰品 1"
+Outfitter_cTrinket1SlotName = "饰品 2"
 
-Outfitter_cOutfitCategoryTitle = "Category";
-Outfitter_cBankCategoryTitle = "Bank";
-Outfitter_cDepositToBank = "Deposit all items to bank";
-Outfitter_cDepositUniqueToBank = "Deposit unique items to bank";
-Outfitter_cWithdrawFromBank = "Withdraw items from bank";
+Outfitter_cOutfitCategoryTitle = "分类"
+Outfitter_cBankCategoryTitle = "银行"
+Outfitter_cDepositToBank = "将所有物品存入银行"
+Outfitter_cDepositUniqueToBank = "将独有物品存入银行"
+Outfitter_cWithdrawFromBank = "从银行取出物品"
 
-Outfitter_cMissingItemsLabel = "Missing items: ";
-Outfitter_cBankedItemsLabel = "Banked items: ";
+Outfitter_cMissingItemsLabel = "缺失的物品: "
+Outfitter_cBankedItemsLabel = "已存银行的物品: "
 
-Outfitter_cRepairAllBags = "Outfitter: Repair All Bagged Items";
+Outfitter_cRepairAllBags = "Outfitter: 修理所有背包中的物品"
 
-Outfitter_cStatsCategory = "Stats";
-Outfitter_cMeleeCategory = "Melee";
-Outfitter_cSpellsCategory = "Healing and Spells";
-Outfitter_cRegenCategory = "Regeneration";
-Outfitter_cResistCategory = "Resistances";
-Outfitter_cTradeCategory = "Trade Skills";
-Outfitter_cSpecialStatCategory = "Special";
+Outfitter_cStatsCategory = "属性"
+Outfitter_cMeleeCategory = "近战"
+Outfitter_cSpellsCategory = "治疗和法术"
+Outfitter_cRegenCategory = "回复"
+Outfitter_cResistCategory = "抗性"
+Outfitter_cTradeCategory = "专业技能"
+Outfitter_cSpecialStatCategory = "特殊"
 
-Outfitter_cTankPoints = "TankPoints";
-Outfitter_cCustom = "Custom";
+Outfitter_cTankPoints = "坦克点数"
+Outfitter_cCustom = "自定义"

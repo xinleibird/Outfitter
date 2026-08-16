@@ -11,9 +11,7 @@ Libs\AceOO-2.0\AceOO-2.0.lua
 Libs\AceEvent-2.0\AceEvent-2.0.lua
 
 OutfitterStrings.lua
-OutfitterStrings_cn.lua
 
 BossTrash.lua
-BossTrash_cn.lua
 Outfitter.lua
 Outfitter.xml
