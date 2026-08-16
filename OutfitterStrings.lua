@@ -290,8 +290,7 @@ Outfitter_cLvl63OutfitDescription = "当你选中 63 级以上的怪物时，将
 Outfitter_cTrashOutfitDescription = "当你选中 63 级以下的小怪时，将自动穿上这套装备"
 Outfitter_cCritterOutfitDescription = "当你选中小动物时，将自动穿上这套装备"
 Outfitter_cBeastTrashOutfitDescription = "当你选中 63 级以下的野兽小怪时，将自动穿上这套装备"
-Outfitter_cUndeadTrashOutfitDescription =
-	"当你选中 63 级以下的亡灵小怪时，将自动穿上这套装备"
+Outfitter_cUndeadTrashOutfitDescription = "当你选中 63 级以下的亡灵小怪时，将自动穿上这套装备"
 Outfitter_cDemonTrashOutfitDescription = "当你选中 63 级以下的恶魔小怪时，将自动穿上这套装备"
 
 Outfitter_cKeyBinding = "按键绑定"
