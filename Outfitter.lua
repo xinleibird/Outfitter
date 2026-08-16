@@ -209,10 +209,10 @@ local Outfitter_cIgnoredUnusedItems = {
 };
 
 local Outfitter_cSmartOutfits = {
-	{ Name = Outfitter_cFishingOutfit, StatID = "Fishing", IsAccessory = true },
-	{ Name = Outfitter_cHerbalismOutfit, StatID = "Herbalism", IsAccessory = true },
-	{ Name = Outfitter_cMiningOutfit, StatID = "Mining", IsAccessory = true },
-	{ Name = Outfitter_cSkinningOutfit, StatID = "Skinning", IsAccessory = true },
+	{ Name = Outfitter_cFishingOutfit, StatID = "Fishing", IsAccessory = true, IsBuiltIn = true },
+	{ Name = Outfitter_cHerbalismOutfit, StatID = "Herbalism", IsAccessory = true, IsBuiltIn = true },
+	{ Name = Outfitter_cMiningOutfit, StatID = "Mining", IsAccessory = true, IsBuiltIn = true },
+	{ Name = Outfitter_cSkinningOutfit, StatID = "Skinning", IsAccessory = true, IsBuiltIn = true },
 	{ Name = Outfitter_cFireResistOutfit, StatID = "FireResist", IsBuiltIn = true },
 	{ Name = Outfitter_cNatureResistOutfit, StatID = "NatureResist", IsBuiltIn = true },
 	{ Name = Outfitter_cShadowResistOutfit, StatID = "ShadowResist", IsBuiltIn = true },
