@@ -1435,6 +1435,14 @@ function OutfitterItemDropDown_Initialize()
 
 		Outfitter_AddCategoryMenuItem(vOutfit.Name);
 
+		if vOutfit.StatID then
+			local vStatName = Outfitter_GetStatIDName(vOutfit.StatID);
+
+			if vStatName then
+				Outfitter_AddMenuItem(vFrame, format(Outfitter_cRebuildOutfitFormat, vStatName), "REBUILD");
+			end
+		end
+
 		if vIsSpecialOutfit then
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfit, "DISABLE", vOutfit.Disabled);
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfitInBG, "BGDISABLE", vOutfit.BGDisabled);
@@ -1442,14 +1450,6 @@ function OutfitterItemDropDown_Initialize()
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfitInInstance, "INSTDISABLE", vOutfit.InstDisabled);
 		elseif not vOutfit.IsBuiltIn then
 			Outfitter_AddMenuItem(vFrame, PET_RENAME, "RENAME");
-		end
-
-		if vOutfit.StatID then
-			local vStatName = Outfitter_GetStatIDName(vOutfit.StatID);
-
-			if vStatName then
-				Outfitter_AddMenuItem(vFrame, format(Outfitter_cRebuildOutfitFormat, vStatName), "REBUILD");
-			end
 		end
 
 		Outfitter_AddSubmenuItem(vFrame, Outfitter_cKeyBinding, "BINDING");
