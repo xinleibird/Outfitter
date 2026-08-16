@@ -4835,6 +4835,31 @@ end
 function Outfitter_InitializeSpecialOccassionOutfits()
 	local vOutfit;
 
+	-- Rebuild built-in outfits if missing from saved data (do not touch existing ones)
+
+	for vSmartIndex, vSmartOutfit in Outfitter_cSmartOutfits do
+		if not Outfitter_FindOutfitByStatID(vSmartOutfit.StatID) then
+			vOutfit = Outfitter_NewEmptyOutfit(vSmartOutfit.Name);
+			vOutfit.StatID = vSmartOutfit.StatID;
+			vOutfit.IsBuiltIn = true;
+			vOutfit.IsAccessory = vSmartOutfit.IsAccessory;
+			Outfitter_AddOutfit(vOutfit);
+		end
+	end
+
+	if not Outfitter_GetSpecialOutfit("ArgentDawn") then
+		vOutfit = Outfitter_GenerateSmartOutfit(Outfitter_cArgentDawnOutfit, "ArgentDawn", OutfitterItemList_GetEquippableItems(true), true);
+		vOutfit.SpecialID = "ArgentDawn";
+		Outfitter_AddOutfit(vOutfit);
+	end
+
+	if not Outfitter_GetSpecialOutfit("Riding") then
+		vOutfit = Outfitter_GenerateSmartOutfit(Outfitter_cRidingOutfit, "Riding", OutfitterItemList_GetEquippableItems(true), true);
+		vOutfit.SpecialID = "Riding";
+		vOutfit.BGDisabled = true;
+		Outfitter_AddOutfit(vOutfit);
+	end
+
 	-- Create the dining outfit
 
 	Outfitter_CreateEmptySpecialOccassionOutfit("Dining", Outfitter_cDiningOutfit);
