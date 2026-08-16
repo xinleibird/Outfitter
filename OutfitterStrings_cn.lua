@@ -23,7 +23,7 @@ if GetLocale() == "zhCN" then
 	Outfitter_cOddsNEndsOutfits = "零碎杂物"
 
 	Outfitter_cNormalOutfit = "普通"
-	Outfitter_cNakedOutfit = "初始状态"
+	Outfitter_cNakedOutfit = "全裸"
 
 	Outfitter_cFishingOutfit = "钓鱼"
 	Outfitter_cHerbalismOutfit = "草药学"
