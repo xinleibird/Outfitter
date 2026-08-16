@@ -1299,7 +1299,8 @@ function Outfitter_RebuildSelectedOutfit()
 
 	local vOutfit = Outfitter_GenerateSmartOutfit("temp", gOutfitter_OutfitToRebuild.StatID, OutfitterItemList_GetEquippableItems(true));
 
-	if vOutfit then
+	if vOutfit
+			and not Outfitter_IsEmptyOutfit(vOutfit) then
 		gOutfitter_OutfitToRebuild.Items = vOutfit.Items;
 		Outfitter_UpdateOutfitCategory(gOutfitter_OutfitToRebuild);
 		Outfitter_WearOutfit(gOutfitter_OutfitToRebuild, gOutfitter_OutfitCategoryToRebuild);
@@ -1439,8 +1440,7 @@ function OutfitterItemDropDown_Initialize()
 			Outfitter_AddMenuItem(vFrame, PET_RENAME, "RENAME");
 		end
 
-		if not vIsSpecialOutfit
-				and vOutfit.StatID then
+		if vOutfit.StatID then
 			local vStatName = Outfitter_GetStatIDName(vOutfit.StatID);
 
 			if vStatName then
