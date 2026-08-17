@@ -114,6 +114,7 @@ Outfitter_cBarkskinFisher = "树皮渔夫"
 Outfitter_cArgentDawnCommission = "银色黎明委任徽章"
 Outfitter_cSealOfTheDawn = "黎明之印"
 Outfitter_cRuneOfTheDawn = "黎明符文"
+Outfitter_cMarkOfTheChampion = "勇士印记"
 
 Outfitter_cWhipOfEncouragement = "鞭笞马鞭"
 Outfitter_cGoblinCarKey = "地精赛车钥匙"

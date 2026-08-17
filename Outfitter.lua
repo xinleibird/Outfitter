@@ -186,6 +186,8 @@ local Outfitter_cArgentDawnTrinkets = {
 	{ Code = 13209, SubCode = 0 }, -- Outfitter_cSealOfTheDawn
 	{ Code = 19812, SubCode = 0 }, -- Outfitter_cRuneOfTheDawn
 	{ Code = 12846, SubCode = 0 }, -- Outfitter_cArgentDawnCommission
+	{ Code = 23206, SubCode = 0 }, -- Outfitter_cMarkOfTheChampion (物理)
+	{ Code = 23207, SubCode = 0 }, -- Outfitter_cMarkOfTheChampion (法伤)
 }
 
 local Outfitter_cStatIDItems = {
