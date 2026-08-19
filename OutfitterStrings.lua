@@ -94,14 +94,6 @@ Outfitter_cOrgrimmar = "奥格瑞玛"
 Outfitter_cThunderBluff = "雷霆崖"
 Outfitter_cUndercity = "幽暗城"
 
---副本
-Outfitter_cAQ20 = "安其拉废墟"
-Outfitter_cAQ40 = "安其拉"
-Outfitter_cZG = "祖尔格拉布"
-Outfitter_cES = "翡翠圣殿"
-Outfitter_cBM = "黑色沼泽"
-Outfitter_cK40 = "荒芜巨岩"
-
 Outfitter_cFishingPole = "鱼竿"
 Outfitter_cStrongFishingPole = "强化钓鱼竿"
 Outfitter_cDarkwoodFishingPole = "黑木鱼竿"

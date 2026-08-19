@@ -397,7 +397,6 @@ local Outfitter_cZoneSpecialIDs = {
 	"AB",
 	"WSG",
 	"BR",
-	"Instance",
 }
 
 local Outfitter_cZoneSpecialIDMap = {
@@ -418,12 +417,6 @@ local Outfitter_cZoneSpecialIDMap = {
 	[Outfitter_cOrgrimmar] = { "City" },
 	[Outfitter_cThunderBluff] = { "City" },
 	[Outfitter_cUndercity] = { "City" },
-	[Outfitter_cAQ20] = { "Instance" },
-	[Outfitter_cAQ40] = { "Instance" },
-	[Outfitter_cZG] = { "Instance" },
-	[Outfitter_cES] = { "Instance" },
-	[Outfitter_cBM] = { "Instance" },
-	[Outfitter_cK40] = { "Instance" },
 }
 
 local gOutfitter_StatDistribution = {
@@ -4615,7 +4608,7 @@ function Outfitter_SetSpecialOutfitEnabled(pSpecialID, pEnable)
 		not vOutfit
 		or vOutfit.Disabled
 		or (pEnable and vOutfit.BGDisabled and Outfitter_InBattlegroundZone())
-		or (pEnable and vOutfit.InstDisabled and Outfitter_InInstanceZone())
+		or (pEnable and vOutfit.InstDisabled and IsInInstance())
 	then
 		return
 	end
@@ -4721,6 +4714,23 @@ function Outfitter_UpdateZone()
 			end
 		end
 	end
+
+	-- Riding：进副本 InstDisabled=true 时自动卸下；出副本（仍在马上）自动穿上。
+	-- 用 IsInInstance() 覆盖所有副本（原 Outfitter_cZoneSpecialIDMap 白名单已废弃）。
+	local vRidingOutfit = Outfitter_GetSpecialOutfit("Riding")
+	if vRidingOutfit and vRidingOutfit.InstDisabled then
+		local vAuraStates = Outfitter_GetPlayerAuraStates()
+		local vShouldBeActive = vAuraStates.Riding and not IsInInstance()
+
+		if gOutfitter_SpecialState["Riding"] == nil then
+			gOutfitter_SpecialState["Riding"] = Outfitter_WearingSpecialOutfit("Riding") and true or false
+		end
+
+		if gOutfitter_SpecialState["Riding"] ~= vShouldBeActive then
+			gOutfitter_SpecialState["Riding"] = vShouldBeActive
+			Outfitter_SetSpecialOutfitEnabled("Riding", vShouldBeActive)
+		end
+	end
 end
 
 function Outfitter_InBattlegroundZone()
@@ -4729,11 +4739,7 @@ function Outfitter_InBattlegroundZone()
 	return vZoneSpecialIDMap and vZoneSpecialIDMap[1] == "Battleground"
 end
 
-function Outfitter_InInstanceZone()
-	local vZoneSpecialIDMap = Outfitter_cZoneSpecialIDMap[gOutfitter_CurrentZone]
 
-	return vZoneSpecialIDMap and vZoneSpecialIDMap[1] == "Instance"
-end
 
 function Outfitter_SetAllSlotEnables(pEnable)
 	for _, vInventorySlot in Outfitter_cSlotNames do
