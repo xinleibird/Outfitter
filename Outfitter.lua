@@ -126,6 +126,8 @@ local Outfitter_cItemAliases = {
 	[17074] = 17223, -- Shadowstrike -> Thunderstrike
 }
 
+-- Code 是 key，Name/Type 仅作阅读注释 — 不参与运行时匹配。
+-- 物品 ID 是语言无关的，zhCN 客户端不会导致匹配失败。
 local Outfitter_cSpecialtyBags = {
 	[21340] = { Name = "Soul Pouch", Type = "ShardBag" },
 	[21341] = { Name = "Felcloth Bag", Type = "ShardBag" },
