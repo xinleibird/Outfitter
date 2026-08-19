@@ -211,6 +211,7 @@ local Outfitter_cIgnoredUnusedItems = {
 	[20406] = "Twilight Cultist Mantle",
 	[20407] = "Twilight Cultist Robe",
 	[20408] = "Twilight Cultist Cowl",
+	[36700] = "Woodcutting Axe",
 }
 
 local Outfitter_cSmartOutfits = {
