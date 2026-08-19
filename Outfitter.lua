@@ -3626,6 +3626,12 @@ function Outfitter_CheckStartupSafeWindow()
 		Outfitter_UnregisterEvent(OutfitterFrame, "ITEM_LOCK_CHANGED")
 
 		Outfitter_UpdateEquippedItems()
+
+		-- 登录/PEW 后实际装备更新已落地。如果 Riding buff 还在，重新穿上 Riding。
+		-- 修复：之前 Outfitter_PlayerEnteringWorld 强制卸 Riding 后不再重新检测 aura，
+		-- 导致骑马登录时 Riding 永远脱下。
+		local vAuraStates = Outfitter_GetPlayerAuraStates()
+		Outfitter_SetSpecialOutfitEnabled("Riding", vAuraStates.Riding)
 	end
 end
 
