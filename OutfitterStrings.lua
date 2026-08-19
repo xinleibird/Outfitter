@@ -1,4 +1,4 @@
-Outfitter_cVersion = "1.5.3"
+Outfitter_cVersion = "1.5.4"
 
 Outfitter_cTitle = "Outfitter一键换装"
 Outfitter_cTitleVersion = Outfitter_cTitle

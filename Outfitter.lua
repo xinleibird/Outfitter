@@ -222,6 +222,17 @@ local Outfitter_cSmartOutfits = {
 	{ Name = Outfitter_cFrostResistOutfit, StatID = "FrostResist", IsBuiltIn = true },
 }
 
+-- Which built-in stat outfits expose "disable in BG / disable in instance" in
+-- the right-click menu and get auto-unequipped on zone-change. Only the 4
+-- harvesting outfits make sense - resist outfits are exactly what you put on
+-- inside instances, so those two toggles would be meaningless/harmful there.
+local Outfitter_cZoneDisableStatIDs = {
+	["Fishing"] = true,
+	["Herbalism"] = true,
+	["Mining"] = true,
+	["Skinning"] = true,
+}
+
 local Outfitter_cStatCategoryInfo = {
 	{ Category = "Stat", Name = Outfitter_cStatsCategory },
 	{ Category = "Melee", Name = Outfitter_cMeleeCategory },
@@ -1442,7 +1453,10 @@ function OutfitterItemDropDown_Initialize()
 			end
 		end
 
-		if vIsSpecialOutfit or vOutfit.IsBuiltIn then
+		local vShowZoneDisable = vIsSpecialOutfit
+			or (vOutfit.IsBuiltIn and vOutfit.StatID and Outfitter_cZoneDisableStatIDs[vOutfit.StatID])
+
+		if vShowZoneDisable then
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfit, "DISABLE", vOutfit.Disabled)
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfitInBG, "BGDISABLE", vOutfit.BGDisabled)
 			--hax
@@ -4674,6 +4688,29 @@ function Outfitter_UpdateZone()
 			Outfitter_SetSpecialOutfitEnabled(vSpecialID, vIsActive)
 		end
 	end
+
+	-- Auto-unequip built-in harvesting outfits when entering an instance or
+	-- battleground, mirroring the auto-unequip behavior of Special outfits
+	-- like Riding. Manual wear (right-click, hotkey, /outfitter wear) is
+	-- intentionally NOT blocked - the user can always put the harvesting
+	-- outfit back on inside an instance if they want.
+	for _, vCategoryOutfits in gOutfitter_Settings.Outfits do
+		for _, vOutfit in vCategoryOutfits do
+			if
+				vOutfit.IsBuiltIn
+				and vOutfit.StatID
+				and Outfitter_cZoneDisableStatIDs[vOutfit.StatID]
+				and Outfitter_WearingOutfit(vOutfit)
+			then
+				if
+					(vOutfit.InstDisabled and Outfitter_InInstanceZone())
+					or (vOutfit.BGDisabled and Outfitter_InBattlegroundZone())
+				then
+					Outfitter_RemoveOutfit(vOutfit)
+				end
+			end
+		end
+	end
 end
 
 function Outfitter_InBattlegroundZone()
@@ -4912,7 +4949,7 @@ function Outfitter_Initialize()
 	--
 	if not gOutfitter_Settings then
 		gOutfitter_Settings = {}
-		gOutfitter_Settings.Version = 7
+		gOutfitter_Settings.Version = 8
 		gOutfitter_Settings.Options = {}
 		gOutfitter_Settings.LastOutfitStack = {}
 		gOutfitter_Settings.HideHelm = {}
@@ -5969,6 +6006,28 @@ function Outfitter_CheckDatabase()
 		end
 
 		gOutfitter_Settings.Version = 7
+	end
+
+	-- Version 8: strip InstDisabled / BGDisabled from resist outfits. Those
+	-- two toggles are no longer exposed in the right-click menu for resist
+	-- outfits (meaningless for a group you actively wear inside instances),
+	-- so any pre-existing flag values would otherwise be unreachable.
+
+	if gOutfitter_Settings.Version < 8 then
+		for _, vCategoryOutfits in gOutfitter_Settings.Outfits do
+			for _, vOutfit in vCategoryOutfits do
+				if
+					vOutfit.IsBuiltIn
+					and vOutfit.StatID
+					and not Outfitter_cZoneDisableStatIDs[vOutfit.StatID]
+				then
+					vOutfit.InstDisabled = nil
+					vOutfit.BGDisabled = nil
+				end
+			end
+		end
+
+		gOutfitter_Settings.Version = 8
 	end
 
 	-- Scan the outfits and make sure everything is in order
