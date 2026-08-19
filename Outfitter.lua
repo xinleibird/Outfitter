@@ -192,6 +192,7 @@ local Outfitter_cArgentDawnTrinkets = {
 	{ Code = 23207, SubCode = 0 }, -- Outfitter_cMarkOfTheChampion (法伤)
 }
 
+-- 全部 key（Fishing/Riding/ArgentDawn）与 value（物品 ID）都是语言无关的内部约定，zhCN 客户端不影响匹配。
 local Outfitter_cStatIDItems = {
 	Fishing = Outfitter_cFishingPoles,
 	Riding = Outfitter_cRidingItems,
