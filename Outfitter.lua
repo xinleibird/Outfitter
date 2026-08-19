@@ -1502,7 +1502,7 @@ function OutfitterItemDropDown_Initialize()
 			not gOutfitter_BankFrameOpened
 		)
 
-		if not vIsSpecialOutfit and vCategoryID ~= "Complete" then
+		if not vIsSpecialOutfit and vCategoryID ~= "Complete" and not (vOutfit.IsBuiltIn and vOutfit.StatID) then
 			Outfitter_AddCategoryMenuItem(Outfitter_cOutfitCategoryTitle)
 			Outfitter_AddMenuItem(vFrame, Outfitter_cPartialOutfits, "PARTIAL", vCategoryID == "Partial")
 			Outfitter_AddMenuItem(vFrame, Outfitter_cAccessoryOutfits, "ACCESSORY", vCategoryID == "Accessory")
