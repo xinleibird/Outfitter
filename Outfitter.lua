@@ -6055,18 +6055,20 @@ function Outfitter_CheckDatabase()
 		gOutfitter_Settings.Version = 8
 	end
 
-	-- Version 9: strip BGDisabled / InstDisabled / ArenaDisabled from the
-	-- riding outfit. The zone-disable toggles now default to nil for
+	-- Version 9: strip BGDisabled / InstDisabled / ArenaDisabled from all
+	-- built-in outfits. The zone-disable toggles now default to nil for
 	-- everyone; pre-existing persisted flag values from the old defaults
 	-- (or the Version 4 migration) must be cleared to match.
 
 	if gOutfitter_Settings.Version < 9 then
-		local vRidingOutfit = Outfitter_GetSpecialOutfit("Riding")
-
-		if vRidingOutfit then
-			vRidingOutfit.BGDisabled = nil
-			vRidingOutfit.InstDisabled = nil
-			vRidingOutfit.ArenaDisabled = nil
+		for _, vCategoryOutfits in gOutfitter_Settings.Outfits do
+			for _, vOutfit in vCategoryOutfits do
+				if vOutfit.IsBuiltIn then
+					vOutfit.BGDisabled = nil
+					vOutfit.InstDisabled = nil
+					vOutfit.ArenaDisabled = nil
+				end
+			end
 		end
 
 		gOutfitter_Settings.Version = 9
