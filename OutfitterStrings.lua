@@ -1,4 +1,4 @@
-Outfitter_cVersion = "1.5.8"
+Outfitter_cVersion = "1.5.9"
 
 Outfitter_cTitle = "Outfitter一键换装"
 Outfitter_cTitleVersion = Outfitter_cTitle
@@ -255,6 +255,9 @@ Outfitter_cHideDisabledOutfits = "隐藏已禁用的套装"
 
 Outfitter_cEquipOutfitMessageFormat = "Outfitter: 已装备 %s"
 Outfitter_cUnequipOutfitMessageFormat = "Outfitter: 已卸下 %s"
+Outfitter_cAutoUnequipInInstanceFormat = "Outfitter: 已进入副本，自动卸下 %s"
+Outfitter_cAutoUnequipInBattlegroundFormat = "Outfitter: 已进入战场，自动卸下 %s"
+Outfitter_cAutoUnequipInArenaFormat = "Outfitter: 已进入竞技场，自动卸下 %s"
 
 Outfitter_cAboutTitle = "关于 Outfitter"
 Outfitter_cAuthor =

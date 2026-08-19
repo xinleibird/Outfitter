@@ -4711,7 +4711,18 @@ function Outfitter_UpdateZone()
 					or (vOutfit.BGDisabled and Outfitter_InBattlegroundZone())
 					or (vOutfit.ArenaDisabled and Outfitter_InArenaZone())
 				then
+					local vUnequipFormat
+
+					if vOutfit.InstDisabled and Outfitter_InInstance() then
+						vUnequipFormat = Outfitter_cAutoUnequipInInstanceFormat
+					elseif vOutfit.BGDisabled and Outfitter_InBattlegroundZone() then
+						vUnequipFormat = Outfitter_cAutoUnequipInBattlegroundFormat
+					else
+						vUnequipFormat = Outfitter_cAutoUnequipInArenaFormat
+					end
+
 					Outfitter_RemoveOutfit(vOutfit)
+					Outfitter_NoteMessage(format(vUnequipFormat, vOutfit.Name))
 				end
 			end
 		end
@@ -4731,6 +4742,21 @@ function Outfitter_UpdateZone()
 		if gOutfitter_SpecialState["Riding"] ~= vShouldBeActive then
 			gOutfitter_SpecialState["Riding"] = vShouldBeActive
 			Outfitter_SetSpecialOutfitEnabled("Riding", vShouldBeActive)
+
+			if not vShouldBeActive then
+				local _, vInstanceType = IsInInstance()
+				local vUnequipFormat
+
+				if vInstanceType == "pvp" then
+					vUnequipFormat = Outfitter_cAutoUnequipInBattlegroundFormat
+				elseif vInstanceType == "arena" then
+					vUnequipFormat = Outfitter_cAutoUnequipInArenaFormat
+				else
+					vUnequipFormat = Outfitter_cAutoUnequipInInstanceFormat
+				end
+
+				Outfitter_NoteMessage(format(vUnequipFormat, vRidingOutfit.Name))
+			end
 		end
 	end
 end
