@@ -628,7 +628,7 @@ StaticPopupDialogs["OUTFITTER_CONFIRM_REBUILD"] = {
 
 local function Outfitter_CreateCurrentOutfitFrame()
 	local frame = CreateFrame("Frame", "OutfitterCurrentOutfit", UIParent)
-	frame:SetWidth(125) -- Adjust size as needed
+	frame:SetWidth(165) -- Adjust size as needed
 	frame:SetHeight(25)
 	frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0) -- Position at center of the parent frame
 	frame:SetBackdrop({
@@ -649,7 +649,7 @@ local function Outfitter_CreateCurrentOutfitFrame()
 
 	-- Create a FontString for currently equipped outfits
 	frame.equippedOutfits = frame:CreateFontString(nil, "DIALOG", "GameFontNormal")
-	frame.equippedOutfits:SetWidth(115)
+	frame.equippedOutfits:SetWidth(155)
 	frame.equippedOutfits:SetHeight(15)
 	frame.equippedOutfits:SetJustifyH("CENTER")
 	frame.equippedOutfits:SetNonSpaceWrap(false)
@@ -7619,7 +7619,7 @@ function Outfitter_pfUISkin()
 
 			pfUI.api.StripTextures(OutfitterCurrentOutfit)
 			pfUI.api.CreateBackdrop(OutfitterCurrentOutfit)
-			OutfitterCurrentOutfit:SetWidth(125)
+			OutfitterCurrentOutfit:SetWidth(165)
 
 			local function skin_checkbox(cb)
 				pfUI.api.SkinCheckbox(cb)
