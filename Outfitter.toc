@@ -1,7 +1,7 @@
 ## Interface: 11200
 ## Notes: Outfitter
 ## Author: |cff5BCEFAL|cffF5A9B8e|cffFFFFFFx|cffF5A9B8i|cff5BCEFAe|r
-## Version: 1.5.4
+## Version: 1.5.5
 ## OptionalDeps: TankPoints, Ace2
 ## RequiredDeps: 
 ## SavedVariablesPerCharacter: gOutfitter_Settings

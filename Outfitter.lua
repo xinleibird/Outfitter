@@ -4703,7 +4703,7 @@ function Outfitter_UpdateZone()
 				and Outfitter_WearingOutfit(vOutfit)
 			then
 				if
-					(vOutfit.InstDisabled and Outfitter_InInstanceZone())
+					(vOutfit.InstDisabled and IsInInstance() and not Outfitter_InBattlegroundZone())
 					or (vOutfit.BGDisabled and Outfitter_InBattlegroundZone())
 				then
 					Outfitter_RemoveOutfit(vOutfit)
