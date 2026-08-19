@@ -684,17 +684,17 @@ local currentOutfitFrame = Outfitter_CreateCurrentOutfitFrame()
 local function Outfitter_UpdateCurrentOutfit()
 	if gOutfitter_Settings.Options.ShowCurrentOutfit then
 		local equippedNames = ""
-		for vCategoryID, vOutfits in gOutfitter_Settings.Outfits do
-			for vIndex, vOutfit in vOutfits do
-				if Outfitter_WearingOutfit(vOutfit) then
-					if equippedNames ~= "" then
-						equippedNames = vOutfit.Name .. ", " .. equippedNames
-					else
-						equippedNames = vOutfit.Name
-					end
+
+		for vIndex, vOutfit in ipairs(gOutfitter_OutfitStack) do
+			if vOutfit.Name then
+				if equippedNames ~= "" then
+					equippedNames = equippedNames .. ", " .. vOutfit.Name
+				else
+					equippedNames = vOutfit.Name
 				end
 			end
 		end
+
 		currentOutfitFrame.equippedOutfits:SetText(equippedNames)
 	end
 end
