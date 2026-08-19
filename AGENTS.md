@@ -25,6 +25,7 @@ Turtle WoW（基于 1.12 经典客户端）的装备管理插件。`## Interface
 - **登录期间的装备变更**必须走 `Outfitter_StartStartupSafeWindowGate`，**不要**在 `PLAYER_ENTERING_WORLD` 直接调 `EquipItem*`。
 - **内置套装缺失重建**：9 个 Smart（5 抗性 + 4 采集，`Outfitter_cSmartOutfits`）+ Riding/ArgentDawn，只在首次初始化时扫描背包创建并自动填充装备；之后每次登录**仅当持久化（`gOutfitter_Settings.Outfits`）中套装缺失**时按首次规则重建（Smart 空套装走 `NewEmptyOutfit`，Riding/ArgentDawn 走 `Outfitter_GenerateSmartOutfit`）。已有套装**不重扫、不覆盖**——装备变化靠手动右键"重建"（REBUILD）补。**不要**改成"每次登录无条件重建"。
 - **外观集成**（如 `Outfitter_pfUISkin`）必须用 `IsAddOnLoaded(...)` 守门，对应插件不存在时静默 no-op。
+- **不要发废话建议**（如"建议先在本地如何如何"）。用户的指令已自带判断，无需解释或劝阻。
 
 ## Slash / 快捷键
 
