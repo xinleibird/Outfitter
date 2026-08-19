@@ -1,4 +1,4 @@
-Outfitter_cVersion = "1.5.7"
+Outfitter_cVersion = "1.5.8"
 
 Outfitter_cTitle = "Outfitter一键换装"
 Outfitter_cTitleVersion = Outfitter_cTitle
@@ -303,6 +303,7 @@ BINDING_NAME_OUTFITTER_OUTFIT10 = "套装 10"
 
 Outfitter_cDisableOutfit = "禁用套装"
 Outfitter_cDisableOutfitInBG = "在战场中禁用此套装"
+Outfitter_cDisableOutfitInArena = "在竞技场中禁用此套装"
 Outfitter_cDisableOutfitInInstance = "在副本中禁用此套装"
 Outfitter_cDisabledOutfitName = "%s（已禁用）"
 

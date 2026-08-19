@@ -1456,7 +1456,7 @@ function OutfitterItemDropDown_Initialize()
 		if vShowZoneDisable then
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfit, "DISABLE", vOutfit.Disabled)
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfitInBG, "BGDISABLE", vOutfit.BGDisabled)
-			--hax
+			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfitInArena, "ARENADISABLE", vOutfit.ArenaDisabled)
 			Outfitter_AddMenuItem(vFrame, Outfitter_cDisableOutfitInInstance, "INSTDISABLE", vOutfit.InstDisabled)
 		elseif not vOutfit.IsBuiltIn then
 			Outfitter_AddMenuItem(vFrame, PET_RENAME, "RENAME")
@@ -4608,6 +4608,7 @@ function Outfitter_SetSpecialOutfitEnabled(pSpecialID, pEnable)
 		not vOutfit
 		or vOutfit.Disabled
 		or (pEnable and vOutfit.BGDisabled and Outfitter_InBattlegroundZone())
+		or (pEnable and vOutfit.ArenaDisabled and Outfitter_InArenaZone())
 		or (pEnable and vOutfit.InstDisabled and IsInInstance())
 	then
 		return
@@ -4706,8 +4707,9 @@ function Outfitter_UpdateZone()
 				and Outfitter_WearingOutfit(vOutfit)
 			then
 				if
-					(vOutfit.InstDisabled and IsInInstance() and not Outfitter_InBattlegroundZone())
+					(vOutfit.InstDisabled and Outfitter_InInstance())
 					or (vOutfit.BGDisabled and Outfitter_InBattlegroundZone())
+					or (vOutfit.ArenaDisabled and Outfitter_InArenaZone())
 				then
 					Outfitter_RemoveOutfit(vOutfit)
 				end
@@ -4734,9 +4736,17 @@ function Outfitter_UpdateZone()
 end
 
 function Outfitter_InBattlegroundZone()
-	local vZoneSpecialIDMap = Outfitter_cZoneSpecialIDMap[gOutfitter_CurrentZone]
+	return select(2, IsInInstance()) == "pvp"
+end
 
-	return vZoneSpecialIDMap and vZoneSpecialIDMap[1] == "Battleground"
+function Outfitter_InArenaZone()
+	return select(2, IsInInstance()) == "arena"
+end
+
+function Outfitter_InInstance()
+	local _, vInstanceType = IsInInstance()
+
+	return vInstanceType == "party" or vInstanceType == "raid"
 end
 
 
@@ -5092,7 +5102,6 @@ function Outfitter_InitializeOutfits()
 
 	vOutfit = Outfitter_GenerateSmartOutfit(Outfitter_cRidingOutfit, "Riding", vEquippableItems, true)
 	vOutfit.SpecialID = "Riding"
-	vOutfit.BGDisabled = true
 	Outfitter_AddOutfit(vOutfit)
 
 	Outfitter_InitializeSpecialOccassionOutfits()
@@ -5143,7 +5152,6 @@ function Outfitter_InitializeSpecialOccassionOutfits()
 			true
 		)
 		vOutfit.SpecialID = "Riding"
-		vOutfit.BGDisabled = true
 		Outfitter_AddOutfit(vOutfit)
 	end
 
@@ -5561,6 +5569,13 @@ function Outfitter_OutfitItemSelected(pMenu, pValue)
 			vOutfit.BGDisabled = nil
 		else
 			vOutfit.BGDisabled = true
+		end
+		gOutfitter_DisplayIsDirty = true
+	elseif pValue == "ARENADISABLE" then
+		if vOutfit.ArenaDisabled then
+			vOutfit.ArenaDisabled = nil
+		else
+			vOutfit.ArenaDisabled = true
 		end
 		gOutfitter_DisplayIsDirty = true
 	elseif pValue == "INSTDISABLE" then
@@ -5983,16 +5998,10 @@ function Outfitter_CheckDatabase()
 		gOutfitter_Settings.Version = 3
 	end
 
-	-- Version 4 sets the BGDisabled flag for the mounted outfit
+	-- Version 4 formerly set BGDisabled / InstDisabled on the riding outfit.
+	-- Those defaults are now nil (user-toggled only), so nothing to migrate.
 
 	if gOutfitter_Settings.Version < 4 then
-		local vRidingOutfit = Outfitter_GetSpecialOutfit("Riding")
-
-		if vRidingOutfit then
-			vRidingOutfit.BGDisabled = true
-			vRidingOutfit.InstDisabled = true
-		end
-
 		gOutfitter_Settings.Version = 4
 	end
 
@@ -6044,6 +6053,23 @@ function Outfitter_CheckDatabase()
 		end
 
 		gOutfitter_Settings.Version = 8
+	end
+
+	-- Version 9: strip BGDisabled / InstDisabled / ArenaDisabled from the
+	-- riding outfit. The zone-disable toggles now default to nil for
+	-- everyone; pre-existing persisted flag values from the old defaults
+	-- (or the Version 4 migration) must be cleared to match.
+
+	if gOutfitter_Settings.Version < 9 then
+		local vRidingOutfit = Outfitter_GetSpecialOutfit("Riding")
+
+		if vRidingOutfit then
+			vRidingOutfit.BGDisabled = nil
+			vRidingOutfit.InstDisabled = nil
+			vRidingOutfit.ArenaDisabled = nil
+		end
+
+		gOutfitter_Settings.Version = 9
 	end
 
 	-- Scan the outfits and make sure everything is in order
