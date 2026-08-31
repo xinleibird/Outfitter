@@ -530,11 +530,20 @@ local Outfitter_cMinEquipmentUpdateInterval = 1.5
 -- always applied immediately; non-weapon changes are queued here and stepped
 -- a few per frame to avoid a single-frame hitch.
 
-local Outfitter_cMaxChangesPerFrame = 2
+local Outfitter_cMaxChangesPerFrame = 1
 local gOutfitter_PendingChangeList = nil
 local gOutfitter_PendingChangeIndex = nil
 local gOutfitter_PendingCompiledOutfit = nil
 local gOutfitter_PendingEmptyBagSlots = nil
+
+-- Deferred equipment-update queue.  Outfitter_EndEquipmentUpdate no longer
+-- triggers the (potentially heavy) Outfitter_UpdateEquippedItems inline;
+-- it just registers a pending request here.  OutfitterUpdateFrame_OnUpdate
+-- drains the queue after Outfitter_cOutfitQueueDelay, which absorbs burst
+-- input (AOE target swaps, zone changes) and lets StepPendingEquip walk
+-- the resulting change list one slot per frame.
+local Outfitter_cOutfitQueueDelay = 0.1
+local gOutfitter_PendingUpdate = nil
 
 local Outfitter_cStartupSafeWindowInterval = 0.25
 local Outfitter_cStartupSafeWindowsRequired = 3
@@ -3628,6 +3637,37 @@ function Outfitter_CheckStartupSafeWindow()
 	end
 end
 
+function OutfitterQueue_RegisterUpdate(pCallerName)
+	if gOutfitter_PendingUpdate then
+		return
+	end
+
+	gOutfitter_PendingUpdate = {
+		queueTime = GetTime(),
+		caller = pCallerName,
+	}
+
+	OutfitterTimer_AdjustTimer()
+end
+
+function OutfitterQueue_Process()
+	if not gOutfitter_PendingUpdate then
+		return
+	end
+
+	if gOutfitter_StartupGate then
+		return
+	end
+
+	if GetTime() - gOutfitter_PendingUpdate.queueTime < Outfitter_cOutfitQueueDelay then
+		return
+	end
+
+	gOutfitter_PendingUpdate = nil
+
+	Outfitter_UpdateEquippedItems()
+end
+
 function Outfitter_BeginEquipmentUpdate()
 	gOutfitter_EquipmentUpdateCount = gOutfitter_EquipmentUpdateCount + 1
 end
@@ -3636,7 +3676,7 @@ function Outfitter_EndEquipmentUpdate(pCallerName)
 	gOutfitter_EquipmentUpdateCount = gOutfitter_EquipmentUpdateCount - 1
 
 	if gOutfitter_EquipmentUpdateCount == 0 then
-		Outfitter_UpdateEquippedItems()
+		OutfitterQueue_RegisterUpdate(pCallerName)
 		Outfitter_Update(false)
 	end
 end
@@ -3688,60 +3728,22 @@ function Outfitter_UpdateEquippedItems()
 
 	local vEquipmentChangeList = Outfitter_BuildEquipmentChangeList(vCompiledOutfit, vEquippableItems)
 
-	-- Split the changes into weapon slots (applied immediately, in or out
-	-- of combat) and everything else (deferred while in combat, otherwise
-	-- queued and stepped a few per frame to avoid a single-frame hitch)
+	-- All changes (weapon and non-weapon) are queued; StepPendingEquip walks
+	-- them one slot per frame.  We no longer apply weapon slots immediately,
+	-- trading a single-frame delay on weapon swaps for a uniform per-frame
+	-- load that survives AOE bursts.
 
-	local vWeaponChangeList = {}
-	local vArmorChangeList = {}
-
-	if vEquipmentChangeList then
-		for vChangeIndex, vEquipmentChange in vEquipmentChangeList do
-			if vEquipmentChange.SlotName and Outfitter_cCombatEquipmentSlots[vEquipmentChange.SlotName] then
-				table.insert(vWeaponChangeList, vEquipmentChange)
-			else
-				table.insert(vArmorChangeList, vEquipmentChange)
-			end
-		end
-	end
-
-	local vWeaponChangeCount = table.getn(vWeaponChangeList)
-	local vArmorChangeCount = table.getn(vArmorChangeList)
-
+	local vChangeCount = vEquipmentChangeList and table.getn(vEquipmentChangeList) or 0
 	local vEmptyBagSlots
 
-	if vWeaponChangeCount > 0 or vArmorChangeCount > 0 then
+	if vChangeCount > 0 then
 		vEmptyBagSlots = Outfitter_GetEmptyBagSlotList()
-	end
+		gOutfitter_PendingChangeList = vEquipmentChangeList
+		gOutfitter_PendingChangeIndex = 1
+		gOutfitter_PendingCompiledOutfit = vCompiledOutfit
+		gOutfitter_PendingEmptyBagSlots = vEmptyBagSlots
 
-	-- Apply weapon changes immediately and update the expected weapon state
-
-	if vWeaponChangeCount > 0 then
-		-- local	vExpectedEquippableItems = OutfitterItemList_New();
-
-		Outfitter_ExecuteEquipmentChangeList(vWeaponChangeList, vEmptyBagSlots, vExpectedEquippableItems)
-
-		for vInventorySlot, vItem in vCompiledOutfit.Items do
-			if Outfitter_cCombatEquipmentSlots[vInventorySlot] then
-				gOutfitter_ExpectedOutfit.Items[vInventorySlot] = vItem
-			end
-		end
-	end
-
-	-- Non-weapon changes are deferred while in combat and queued for
-	-- per-frame execution otherwise
-
-	if vArmorChangeCount > 0 then
-		if gOutfitter_InCombat then
-			gOutfitter_EquippedNeedsUpdate = true
-		else
-			gOutfitter_PendingChangeList = vArmorChangeList
-			gOutfitter_PendingChangeIndex = 1
-			gOutfitter_PendingCompiledOutfit = vCompiledOutfit
-			gOutfitter_PendingEmptyBagSlots = vEmptyBagSlots
-
-			OutfitterTimer_AdjustTimer()
-		end
+		OutfitterTimer_AdjustTimer()
 	end
 end
 
@@ -3771,12 +3773,11 @@ function Outfitter_StepPendingEquip()
 		local vEquipmentChange = gOutfitter_PendingChangeList[gOutfitter_PendingChangeIndex]
 
 		if not vEquipmentChange then
-			-- All changes applied: commit the expected non-weapon state
+			-- All changes applied: commit the expected state for every slot
+			-- (weapons included now that they share the pending queue).
 
 			for vInventorySlot, vItem in gOutfitter_PendingCompiledOutfit.Items do
-				if not Outfitter_cCombatEquipmentSlots[vInventorySlot] then
-					gOutfitter_ExpectedOutfit.Items[vInventorySlot] = vItem
-				end
+				gOutfitter_ExpectedOutfit.Items[vInventorySlot] = vItem
 			end
 
 			gOutfitter_PendingChangeList = nil
@@ -5810,7 +5811,7 @@ function OutfitterTimer_AdjustTimer()
 		vNeedTimer = true
 	end
 
-	if gOutfitter_EquippedNeedsUpdate or gOutfitter_WeaponsNeedUpdate or gOutfitter_PendingChangeList then
+	if gOutfitter_EquippedNeedsUpdate or gOutfitter_WeaponsNeedUpdate or gOutfitter_PendingChangeList or gOutfitter_PendingUpdate then
 		vNeedTimer = true
 	end
 
@@ -5826,6 +5827,8 @@ function OutfitterUpdateFrame_OnUpdate(pElapsed)
 	if OutfitterMinimapButton.IsDragging then
 		OutfitterMinimapButton_UpdateDragPosition()
 	end
+
+	OutfitterQueue_Process()
 
 	if not OutfitterUpdateFrame.Elapsed then
 		OutfitterUpdateFrame.Elapsed = 0
@@ -6396,6 +6399,10 @@ function OutfitterItemList_GetEquippableItems(pIncludeItemStats)
 			if vNumBagSlots > 0 then
 				for vBagSlotIndex = 1, vNumBagSlots do
 					local vItemInfo = Outfitter_GetBagItemInfo(vBagIndex, vBagSlotIndex)
+
+					-- Cheap predicates first; BagItemWillBind (which may hit
+					-- the item-info cache) is the most expensive check and
+					-- only matters for items we could otherwise equip.
 
 					if
 						vItemInfo
