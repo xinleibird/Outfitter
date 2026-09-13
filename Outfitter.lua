@@ -2244,6 +2244,7 @@ function Outfitter_Update(pUpdateSlotEnables)
 		OutfitterRememberVisibility:SetChecked(not gOutfitter_Settings.Options.DisableAutoVisibility)
 		OutfitterShowHotkeyMessages:SetChecked(not gOutfitter_Settings.Options.DisableHotkeyMessages)
 		OutfitterShowCurrentOutfit:SetChecked(gOutfitter_Settings.Options.ShowCurrentOutfit)
+		OutfitterHideDisabledOutfits:SetChecked(gOutfitter_Settings.Options.HideDisabledOutfits)
 	end
 end
 
