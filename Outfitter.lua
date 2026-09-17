@@ -3042,7 +3042,13 @@ function Outfitter_BuildEquipmentChangeList(pOutfit, pEquippableItems)
 	-- Remove items which are already in the correct slot from the outfit and from the
 	-- equippable items list
 
+	-- Collect keys first to avoid modifying table during iteration (Lua 5.0 safety)
+	local vSlotsToCheck = {}
 	for vInventorySlot, vOutfitItem in pOutfit.Items do
+		vSlotsToCheck[vInventorySlot] = vOutfitItem
+	end
+
+	for vInventorySlot, vOutfitItem in vSlotsToCheck do
 		local vContainsItem, vItem =
 			OutfitterItemList_InventorySlotContainsItem(pEquippableItems, vInventorySlot, vOutfitItem)
 
@@ -3077,7 +3083,7 @@ function Outfitter_BuildEquipmentChangeList(pOutfit, pEquippableItems)
 			else
 				-- Find the item
 
-				local vItem, vIgnoredItem = OutfitterItemList_FindItemOrAlt(pEquippableItems, vOutfitItem, true)
+				local vItem, vIgnoredItem = OutfitterItemList_FindItemOrAlt(pEquippableItems, vOutfitItem, true, true)
 
 				-- If the item wasn't found then show an appropriate error message
 
@@ -6437,29 +6443,58 @@ function OutfitterItemList_GetEquippableItems(pIncludeItemStats)
 	return gOutfitter_EquippableItems
 end
 
+function OutfitterItemList_RemoveItemAtLocation(pItemList, pLocation)
+	if not pLocation or not pItemList then
+		return
+	end
+
+	if pLocation.BagIndex then
+		local vBagItems = pItemList.BagItems[pLocation.BagIndex]
+		if vBagItems then
+			local vItem = vBagItems[pLocation.BagSlotIndex]
+			if vItem then
+				OutfitterItemList_RemoveItem(pItemList, vItem)
+			end
+		end
+	elseif pLocation.SlotName and pItemList.InventoryItems then
+		local vItem = pItemList.InventoryItems[pLocation.SlotName]
+		if vItem then
+			OutfitterItemList_RemoveItem(pItemList, vItem)
+		end
+	end
+end
+
 function OutfitterItemList_SwapLocations(pItemList, pLocation1, pLocation2)
-	-- if pLocation1.BagIndex then
-	-- 	Outfitter_TestMessage("OutfitterItemList_SwapLocations: Swapping bag "..pLocation1.BagIndex..", "..pLocation1.BagSlotIndex);
-	-- elseif pLocation1.SlotName then
-	-- 	Outfitter_TestMessage("OutfitterItemList_SwapLocations: Swapping slot "..pLocation1.SlotName);
-	-- end
-	-- if pLocation2.BagIndex then
-	-- 	Outfitter_TestMessage("OutfitterItemList_SwapLocations: with bag "..pLocation2.BagIndex..", "..pLocation2.BagSlotIndex);
-	-- elseif pLocation2.SlotName then
-	-- 	Outfitter_TestMessage("OutfitterItemList_SwapLocations: with slot "..pLocation2.SlotName);
-	-- end
+	OutfitterItemList_RemoveItemAtLocation(pItemList, pLocation1)
+	OutfitterItemList_RemoveItemAtLocation(pItemList, pLocation2)
 end
 
 function OutfitterItemList_SwapLocationWithInventorySlot(pItemList, pLocation, pSlotName)
-	-- if pLocation.BagIndex then
-	-- 	Outfitter_TestMessage("OutfitterItemList_SwapLocationWithInventorySlot: Swapping bag "..pLocation.BagIndex..", "..pLocation.BagSlotIndex.." with slot "..pSlotName);
-	-- elseif pLocation.SlotName then
-	-- 	Outfitter_TestMessage("OutfitterItemList_SwapLocationWithInventorySlot: Swapping slot "..pLocation.SlotName.." with slot "..pSlotName);
-	-- end
+	OutfitterItemList_RemoveItemAtLocation(pItemList, pLocation)
+
+	if pItemList.InventoryItems then
+		local vOldItem = pItemList.InventoryItems[pSlotName]
+		if vOldItem then
+			OutfitterItemList_RemoveItem(pItemList, vOldItem)
+		end
+	end
 end
 
 function OutfitterItemList_SwapBagSlotWithInventorySlot(pItemList, pBagIndex, pBagSlotIndex, pSlotName)
-	-- Outfitter_TestMessage("OutfitterItemList_SwapBagSlotWithInventorySlot: Swapping bag "..pBagIndex..", "..pBagSlotIndex.." with slot "..pSlotName);
+	local vBagItems = pItemList.BagItems[pBagIndex]
+	if vBagItems then
+		local vItem = vBagItems[pBagSlotIndex]
+		if vItem then
+			OutfitterItemList_RemoveItem(pItemList, vItem)
+		end
+	end
+
+	if pItemList.InventoryItems then
+		local vOldItem = pItemList.InventoryItems[pSlotName]
+		if vOldItem then
+			OutfitterItemList_RemoveItem(pItemList, vOldItem)
+		end
+	end
 end
 
 function OutfitterItemList_FindItemOrAlt(pItemList, pOutfitItem, pMarkAsInUse, pAllowSubCodeWildcard)
@@ -6580,9 +6615,9 @@ function OutfitterItemList_FindItemIndex(pItemList, pOutfitItem, pAllowSubCodeWi
 		end
 	end
 
-	-- Return the match if only one item was found
+	-- Return the match if any item was found
 
-	if vNumItemsFound == 1 and not vBestMatch.IgnoreItem then
+	if vNumItemsFound >= 1 and vBestMatch and not vBestMatch.IgnoreItem then
 		return vBestMatch, vBestMatchIndex, vItemFamily, nil
 	end
 
